@@ -71,4 +71,26 @@
 
 ### 4.讓主機02可以連到外網
 
+* 到主機01設定
+
+以下指令為將內網封包發出並進行轉發
+
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    iptables -A FORWARD -o enp0s3 -i enp0s9 -s 192.168.1.0/24 -m conntrack --ctstate NEW -j ACCEPT 
+    iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 
+    iptables -t nat -A POSTROUTING -o enp0s3 -s 192.168.1.0/24 -j MASQUERADE
+
+* 回到主機02
+
+測試主機02可不可以透過主機01連向外網
+
+    ping 8.8.8.8
+    ping tw.tahoo.com
+
+若不行使用以下指令修改裡面的`nameserver`的DNS
+
+    vim /etc/resolv.conf
+    nameserver 8.8.8.8      //將原本的改為此行
+    nameserver 8.8.4.4      //若無此行請新增此行
+
 
