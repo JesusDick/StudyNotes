@@ -85,7 +85,7 @@
 測試主機02可不可以透過主機01連向外網
 
     ping 8.8.8.8
-    ping tw.tahoo.com
+    ping tw.yahoo.com
 
 若不行使用以下指令修改裡面的`nameserver`的DNS
 
