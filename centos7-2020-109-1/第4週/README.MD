@@ -52,7 +52,7 @@
 
 啟用NFS
 
-systemctl start rpcbind
+    systemctl start rpcbind
 
 創建目錄
 

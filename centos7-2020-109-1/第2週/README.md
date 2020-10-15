@@ -17,7 +17,7 @@
 並新創建一個使用者
 
     useradd tom
-    passwd tom    /改使用者密碼
+    passwd tom    //改使用者密碼
 
 配置剛剛複製的檔案
 
@@ -46,7 +46,7 @@
 
 設置完後，更新`systemctl`
 
-    su -        /切換回管理員
+    su -        //切換回管理員
     systemctl daemon-reload
     systemctl restart vncserver@:1.service
     systemctl status vncserver@:1.service       /查看狀態
