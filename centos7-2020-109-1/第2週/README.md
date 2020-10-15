@@ -21,7 +21,7 @@
 
 配置剛剛複製的檔案
 
-    vi /etc/systemd/system/vncserver@:1.service
+    vim /etc/systemd/system/vncserver@:1.service
 
 將裡頭原先的`user`改為剛剛新增的使用者名稱。
 
@@ -29,7 +29,7 @@
     Type=forking
     # Clean any existing files in /tmp/.X11-unix environment
     ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
-    ExecStart=/usr/sbin/runuser -l jacky -c "/usr/bin/vncserver %i"
+    ExecStart=/usr/sbin/runuser -l tom -c "/usr/bin/vncserver %i"
 
     # 一般帳號
     PIDFile=/home/tom/.vnc/%H%i.pid
