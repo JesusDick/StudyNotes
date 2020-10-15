@@ -5,6 +5,10 @@
 
 ### 1. 主機01 
 
+切換管理員
+
+    su
+
 安裝NFS伺服器
 
     yum install nfs-utils
@@ -45,6 +49,7 @@
 * 在使用檔案分享時，建議兩台主機的防火牆都關閉。
     
         systemctl stop firewalld
+        su      //記得切換管理員
 
 安裝NFS
 
@@ -81,3 +86,54 @@
 
         cd /data
         ls
+
+---
+
+# 利用NFS服務器管理http
+
+* 會建議先關閉防火牆，測試成功後再加入白名單
+
+        systemctl stop firewalld
+        su      //記得切換到管理員
+
+### 1. 主機01
+
+先在載httpd
+
+    yum install httpd -y
+
+掛載http
+
+    mount -t nfs 192.168.49.0:/data /var/www/html
+
+切換到html目錄
+
+    cd /var/www/html
+    rm *        //若裡面有其他檔案可以先用此指令刪除
+
+創建測試檔案
+
+    echo "centos7-1" > index.html
+    echo "helloworld" > hi.htm
+
+開啟瀏覽器測試，打上主機01的IP
+
+![示意圖](homework.png)
+![示意圖](homework02.png)
+
+### 2. 主機02
+
+先在載httpd
+
+    yum install httpd -y
+
+掛載
+
+    mount -t nfs 192.168.49.0:/data /var/www/html
+
+    IP應該要跟主機01的IP一樣
+
+開啟瀏覽器測試，打上主機02的IP，成功如下圖
+
+![示意圖](homework03.png)
+![示意圖](homework04.png)
