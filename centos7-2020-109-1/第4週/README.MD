@@ -98,13 +98,18 @@
 
 ### 1. 主機01
 
-先在載httpd
+先下載httpd
 
     yum install httpd -y
 
 掛載http
 
     mount -t nfs 192.168.49.0:/data /var/www/html
+
+啟用httpd
+
+    systemctl start httpd
+    systemctl restart httpd
 
 切換到html目錄
 
@@ -123,7 +128,7 @@
 
 ### 2. 主機02
 
-先在載httpd
+先下載httpd
 
     yum install httpd -y
 
@@ -132,6 +137,11 @@
     mount -t nfs 192.168.49.0:/data /var/www/html
 
     IP應該要跟主機01的IP一樣
+
+啟用httpd
+
+    systemctl start httpd
+    systemctl restart httpd
 
 開啟瀏覽器測試，打上主機02的IP，成功如下圖
 
