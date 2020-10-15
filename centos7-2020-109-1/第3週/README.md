@@ -7,7 +7,7 @@
 安裝EPEL套件，此為第三方套件
 
     yum install epel-release -y
-    tum clean all -y        /清除快取
+    tum clean all -y        //清除快取
 
 安裝PPTP
 
