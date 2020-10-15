@@ -23,7 +23,7 @@
     remoteip 10.0.10.2-254
 完成如下
 
-![示意圖](homework.png)
+![示意圖](homework.PNG)
 
 之後使用以下指令更改`ms-dns`
 
@@ -48,7 +48,8 @@
 檢查連線是否有成功，成功會多出以下圖片的這行
 
     ifconfig
-![示意圖](homework02.png)
+
+![示意圖](homework02.PNG)
 
 ## 設置可對外連線
 
