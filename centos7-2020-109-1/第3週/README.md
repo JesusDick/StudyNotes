@@ -53,8 +53,21 @@
 
 ## 設置可對外連線
 
-* 目前的VPN配置完後，會是一個死循環，若要對外連線必須使用以下步驟。
+* 目前的VPN配置完後，會是一個死循環，若要對外連線目前我的作法是，新增一張實體的無線網卡。
 
+並使用以下指令查看路由狀態。
 
+    ip route show
 
+若無線網卡的路由不在第一位，請使用以下指令
 
+    ip route del default via [網卡ip]
+
+使用以下指令將內網封包發出並進行轉發
+
+    iptables -A FORWARD -o wls* -s 10.0.10.0/24 -m conntrack --ctstate NEW -j ACCEPT
+    iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPR
+    iptables -t nat -A POSTROUTING -o wls* -s 10.0.10.0/24 -j MASQUERADE
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    
+設完之後應該是要可以對外連線的。
