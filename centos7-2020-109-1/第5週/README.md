@@ -57,7 +57,28 @@
 ---
 ## 磁碟配額設定工具
 
-若想查看指定目錄的磁碟配額，可以使用以下指令
+若想查看指定目錄的磁碟配額，可以使用以下指令，這邊`/home`是指定目錄
 
     xfs_quota -xc 'report -h' /home
+
+若想查看指定目錄的磁碟使用情形，可以使用以下指令
+
+    xfs_quota -xc 'free -h' /home
+
+若想針對某群組或使用者列出其使用情形，可以使用以下指令，但在使用此指令前必須有群組或其他使用者。
+
+    useradd tom         //新增使用者
+    passwd tom          //為使用者設定密碼
+    xfs_quota -xc 'limit bsoft=10m bhard=12m tom' /home         //為使用者設定配額
+    xfs_quota -xc 'quota -h tom' /home
+
+測試配額超載，要測試必須先切換使用者
+
+    su - tom
+
+再使用以下指令
+
+    dd if=/dev/zero of=testfile bs=1M coun=13
+
+
 
