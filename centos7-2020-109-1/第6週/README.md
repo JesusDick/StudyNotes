@@ -39,4 +39,9 @@ git認證程式
 
 執行程式
 
-    ./google-authenticator
+    ./google-authenticator      //其他配置默認就好
+
+
+*   1. 手機必須下載`google authenticator`
+    2. 之後用ssh連線時，出現的`verificatoin code`就是跟手機同步的6為數碼
+    3. [若想移除可以參考此文章](https://www.taodabai.com/how/401111241.html)
