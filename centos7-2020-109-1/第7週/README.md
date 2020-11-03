@@ -26,6 +26,7 @@
     ./ngrok tcp 22
 
 複製紅底線的地方
+
 ![示意圖](Notes02.PNG)
 
 再使用putty
