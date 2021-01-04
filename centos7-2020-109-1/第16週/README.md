@@ -85,3 +85,51 @@
 10. 刪除資料表
 
         drop table [資料表名稱];
+
+---
+
+# MySQL結合PHP伺服器
+
+1. 下載`php-mysql`
+
+        yum install php-mysql -y
+
+2. 創建測試用`php`檔，檔案內容如下
+
+        gedit test.php
+        ---------------
+        <?php
+        $server = "localhost";
+        $dbuser = "root";
+        $dbpassword = "[資料庫密碼]";
+        $dbname = "testdb";
+
+        $connection = new mysqli($server, $dbuser, $dbpassword, $dbname);
+
+        if ($connection->connect_error) {
+          die("Connection failed:" . $connection->connect_error);
+        }
+
+
+        $sqlQuery ="SELECT * from Persons;";
+
+        if ($result = $connection->query($sqlQuery)) {
+          while ($row = $result->fetch_row()) {
+            printf ("%s：%d\n", $row[0], $row[1]);
+          }
+
+          $result->close();
+        } else {
+          echo "Execution failed:" . $connection->error;
+        }
+
+        $connection->close();
+        ?>
+
+3. 重啟http伺服器
+
+        systemctl restart httpd
+
+4. 到chrome瀏覽器搜尋虛擬機IP，成功如下圖。
+
+   ![示意圖](Notes09.PNG)
