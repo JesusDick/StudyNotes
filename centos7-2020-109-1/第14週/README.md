@@ -7,6 +7,7 @@
 
 2. 安裝各種依賴包
 
+        yum -y install epel-release
         yum -y install php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel
 
 3. 關閉防火牆
@@ -27,6 +28,24 @@
         systemctl restart httpd
 
 6. 到瀏覽器搜尋虛擬機的`IP`
+
+* ### 無法使用php的情況
+- #### 我自己是有碰到這個問題，我猜是php模組配置有問題，但我不知道為甚麼不能解析php，以下是我的做法。
+
+1. 下載mod_php版本
+
+        yum install mod_php -y
+
+2. 檢查是否有新增`10-php.conf`檔，如果正常安裝不能運作，應該不會有這個檔
+
+        cd /etc/httpd/conf.modules.d
+
+3. 配置`httpd.conf`檔，加入
+
+        cd /etc/httpd/conf
+        gedit httpd.conf
+
+   ![示意圖](Notes02.PNG)
 
 ---
 
@@ -53,7 +72,7 @@
 
 5. 編輯網頁目錄內容
 
-        echo ‘userdir test’ >> /home/[使用者名稱]/public_html/index.html
+        echo userdir test >> /home/[使用者名稱]/public_html/index.html
 
 6. 開啟SELinux和設定httpd_sys_content_t
 
