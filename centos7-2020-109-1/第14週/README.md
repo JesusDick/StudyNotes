@@ -72,7 +72,7 @@
 
 5. 編輯網頁目錄內容
 
-        echo userdir test >> /home/[使用者名稱]/public_html/index.html
+        echo userdirtest >> /home/[使用者名稱]/public_html/index.html
 
 6. 開啟SELinux和設定httpd_sys_content_t
 
