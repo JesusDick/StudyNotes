@@ -90,4 +90,4 @@
     * `nmap -sn` : ping掃描，我們想查看哪些 IP 地址包含活動主機，哪些不包含活動主機
 
         * 對192.168.x.x/24進行所有IP的掃瞄 : `nmap -sn 192.168.0.0/24`
-        */24是以IP的開始位去判斷，CIDR符號是否使用24，可以去看[分類網路](https://zh.wikipedia.org/wiki/%E5%88%86%E7%B1%BB%E7%BD%91%E7%BB%9C)。
+        * /24是以IP的開始位去判斷，CIDR符號是否使用24，可以去看[分類網路](https://zh.wikipedia.org/wiki/%E5%88%86%E7%B1%BB%E7%BD%91%E7%BB%9C)。
