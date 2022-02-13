@@ -29,8 +29,6 @@ ___例如 :___
 
 1. `fs.readFile('讀取文件的路徑' , [options], callback)` : 用來讀取指定文件中的內容。
 
-```diff
-- 補充 : 往後看到帶有中括號('[]')的函數可有可無。
-```
 * <font color=#FF0000>___補充 : 往後看到帶有中括號('[]')的函數可有可無。___</font>
-1. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
+
+2. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
