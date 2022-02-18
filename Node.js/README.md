@@ -22,13 +22,13 @@
 
 ---
 
-## fs模組
+## 1. [fs模組](#fs)
 * fs模組是Node.js官方提供，用來對文件操作的模組，他提供一系列的方法和屬性，來讓使用者對文件操作的需求。
 #### [1. fs模組路徑拼接問題](#dirname)
 在寫程式時應該盡量避免使用`./`或`../`，因為這些都是***相對路徑***，且並不是每個人的電腦的路徑名稱都相同；
 > **所謂的*相對路徑*就是系統會動態拼接該檔案，在該電腦的所在目錄的完整路徑；**
 >> ***例如:***
->>>1. ./example.txt  #當前目錄內的文件。
+>>>1. `./example.txt`  #當前目錄內的文件。
 >>>2. C:\User\username\Desktop\CurrentDir\  #`example.txt`所存在的目錄，`./` 會自動拼接起這段路徑
 
 雖然可以直接使用___絕對路徑___，但是不利於維護且移植性較差；
@@ -39,11 +39,37 @@
 要想解決以上兩種方法的缺點，可以使用`__dirname`
 >`__dirname` : 表示當前文件所處的目錄。
 
-___方法 :___
 
-1. `fs.readFile('讀取文件的路徑' , [options], callback)` : 用來讀取指定文件中的內容。
+## 2. [path路徑模組](#path)
+* path模組是由Node.js官方提供，用來***處理路徑問題***的模組，用來滿足使用者對路徑處理的需求。
+
+1. `../`的字符串，代表會回到前一個路徑，如同在終端機輸入`cd ..`一樣。
+> ***例如***
+>>* console.log(path.join('/a', '/b/c', '../', './d', '/e'))
+>>* 輸出: /a/b/d/e
+
+2. 今後凡是涉及到路徑拼接的操作，都要使用`path.join()`的方法進行處理，並應該盡量避免使用`+`號來拼接路徑，因為會導致拼接錯誤。
+> ***例如***
+>>* fs.readFile(__dirname + './a/b/c/index.html', [options], callback)
+>>* 輸出: C:\Users\username\Desktop .\a\b\c\index.html
+
+---
+
+## ___方法 :___
+
+1. <font size=4 name=fs>fs語法</font>
+
+   1. `fs.readFile('讀取文件的路徑' , [options], callback)` : 用來讀取指定文件中的內容。
 
 * > <font color=#FF0000>___補充 : 往後看到帶有中括號('[]')的函數可有可無。___</font>
 
-2. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
-3. <a name="dirname">`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')`</a>
+  2. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
+   
+  3. <a name="dirname">`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')` : 此方法雖然可用但盡量避免。。</a>
+
+1. <font size=4 name=path>path語法</font>
+   
+   1. `path.join('...paths')` : 拼接路徑。
+   2. `path.basename('/a/b/c/d/index.html')` : 只返回最後的路徑，`index.html`。
+   3. `path.basename('/a/b/c/d/index.html', '.html')` : 把最後的路徑的副檔名移除，`index`。
+   4. `path.extname('/a/b/c/d/e/index.html')` : 返回最後路徑的副檔名，`.html`。
