@@ -22,7 +22,7 @@
 
 ---
 
-## [1. fs模組](#fs)
+## [1. fs模組](#1-fs語法)
 * fs模組是Node.js官方提供，用來對文件操作的模組，他提供一系列的方法和屬性，來讓使用者對文件操作的需求。
 #### [1. fs模組路徑拼接問題](#dirname)
 在寫程式時應該盡量避免使用`./`或`../`，因為這些都是***相對路徑***，且並不是每個人的電腦的路徑名稱都相同；
@@ -40,7 +40,7 @@
 >`__dirname` : 表示當前文件所處的目錄。
 
 
-## 2. [path路徑模組](#path)
+## 2. [path路徑模組](#2-path語法)
 * path模組是由Node.js官方提供，用來***處理路徑問題***的模組，用來滿足使用者對路徑處理的需求。
 
 1. `../`的字符串，代表會回到前一個路徑，如同在終端機輸入`cd ..`一樣。
@@ -57,17 +57,17 @@
 
 ## ___方法 :___
 
-1. <font size=10 name=fs>fs語法</font>
+### 1. fs語法
 
    1. `fs.readFile('讀取文件的路徑' , [options], callback)` : 用來讀取指定文件中的內容。
 
-* > <font color=#FF0000>___補充 : 往後看到帶有中括號('[]')的函數可有可無。___</font>
+   * > <font color=#FF0000>___補充 : 往後看到帶有中括號('[]')的函數可有可無。___</font>
 
   2. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
    
   3. <a name="dirname">`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')` : 此方法雖然可用但盡量避免。。</a>
 
-1. <font size=4 name=path>path語法</font>
+### 2. path語法
    
    1. `path.join('...paths')` : 拼接路徑。
    2. `path.basename('/a/b/c/d/index.html')` : 只返回最後的路徑，`index.html`。
