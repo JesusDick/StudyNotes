@@ -71,5 +71,5 @@
    
    1. `path.join('...paths')` : 拼接路徑。
    2. `path.basename('/a/b/c/d/index.html')` : 只返回最後的路徑，`index.html`。
-   3. `path.basename('/a/b/c/d/index.html', '.html')` : 把最後的路徑的副檔名移除，`index`。
+   3. `path.basename('/a/b/c/d/index.html', ['.html'])` : 把最後的路徑的副檔名移除，`index`。
    4. `path.extname('/a/b/c/d/e/index.html')` : 返回最後路徑的副檔名，`.html`。
