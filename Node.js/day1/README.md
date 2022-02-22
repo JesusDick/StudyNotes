@@ -44,5 +44,5 @@ fs.readFile('./day1.txt', 'utf8', function(err, dataStr){
 	console.log('dataStr')
 })
 ```
----
+
 ### [02.修改01來判斷文件是否讀取成功.js](./02.修改01來判斷文件是否讀取成功.js)
