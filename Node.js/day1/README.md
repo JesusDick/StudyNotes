@@ -27,12 +27,12 @@ node 1.js
 `fs.readFile('path', [option], 'callback')` : 
 > `path` : 
 > >要讀取的文件路徑，這裡我們讀取在該目錄下的`./day1.txt`文字檔。
-
+>
 > `[option]`
 > >此函數我們使用`utf8`進行編碼；
-
+>
 > `callback` : 
-> >回調函數，可以讓我們在讀取到文件時該做甚麼，`function(err,dataStr){}`
+> >回調函數，可以讓我們在讀取到文件時該做甚麼；`function(err,dataStr){}`。
 > > >`err` : 當出錯誤訊息時，該讓程式做什麼。
 > > >
 > > >`dataStar`：當讀取成功時，會直接列印出`day1.txt`內的內容。
@@ -61,5 +61,33 @@ fs.readFile('./day11.txt','utf8',function(err,dataStr){
         return console.log("文件讀取失敗!" + err.message)
     }
     console.log(dataStr)
+})
+```
+
+### [03.寫入文件內容.js](./03.寫入文件內容.js)
+`const fs = require('fs')` : 導入fs文件模組
+
+`fs.write.File('path', 'data', [option], 'callback')` : 將文件存放至指定路徑，並寫入指定的文件內容；
+>`path` :
+>>寫入`day1_2.txt`到目前的當目錄
+>
+>`data` :
+>>向`day1_2.txt`寫入指定內容，所以`day1_2.txt`的內容會是`Hello Node.js!`。
+>
+>`[option]` :
+>>我這邊省略直接使用默認值。
+>
+>`callback` : 
+>>當文件觸發寫入錯誤時，該程式做什麼；`function(err){}`。
+>>>如果寫入成功將顯示`文件寫入成功!`的字串，則`err`的值為`null`。
+>>>
+>>>如果寫入失敗將顯示`文件寫入失敗!`的字串，則`err`的值為`一個錯誤對象`。
+
+```
+const fs = require('fs')
+fs.writeFile('./day1_2.txt', 'Hello Node.js', function(err){
+	if(err){
+	return console.log('文件寫入失敗!', err.message)}
+	console.log('文件寫入成功!')
 })
 ```
