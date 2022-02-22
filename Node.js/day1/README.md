@@ -57,7 +57,6 @@ fs.readFile('./day1.txt', 'utf8', function(err, dataStr){
 ```
 const fs = require('fs')
 fs.readFile('./day11.txt','utf8',function(err,dataStr){
-    //當讀取出現錯誤時，回傳錯誤訊息
     if(err){
         return console.log("文件讀取失敗!" + err.message)
     }
