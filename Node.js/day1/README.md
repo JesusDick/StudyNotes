@@ -91,3 +91,92 @@ fs.writeFile('./day1_2.txt', 'Hello Node.js', function(err){
 	console.log('文件寫入成功!')
 })
 ```
+
+###  [04.(練習)整理成績.js](./04.(練習)整理成績.js)
+`dataStr.split()` : 將讀取的文件，以指定的分隔符分割，並將它們作為數組返回。
+
+`arrOld.forEach()` : 對數組中的每個元素執行指定的操作。
+
+>數組 : 數組就是中括弧(`[]`)
+>
+>元素 : 元素指的是`[]`內的東西
+>> 如 : 
+>>
+>>>[ '小紅=99', '小白=100', '小黃=70', '小黑=66', '小綠=88' ]
+
+`item => {}` : 等價`function(item){}`
+
+`arrNew.push()` : 將新的元素加入到數組的最尾端，並將數組長度更新。
+
+`item.replace('=', ':')` : 替換文檔中的字符串，前者(`'='`)為被替換，後者(`':'`)為想替換的字符串。
+
+`arrNew.join('\r\n')` : 將數組的所有元素添加到一個字符串中，由指定的分隔符字符串分隔。
+>`\r` : 回車
+>
+>`\n`: 換行
+```
+const fs = require('fs')
+
+fs.readFile('./files/成績.txt', 'utf8',function(err, dataStr){
+    if(err){
+        return console.log('文件讀取失敗', err.message)
+    }
+
+const arrOld = dataStr.split(' ')
+console.log(arrOld)
+
+const arrNew = []
+arrOld.forEach(item => {
+    arrNew.push(item.replace('=', ':'))
+})
+console.log(arrNew)
+
+const newStr = arrNew.join('\r\n')
+console.log(newStr)
+
+fs.writeFile('./成績-OK.txt', newStr, function(err){
+    if(err){
+        return console.log('文件寫入失敗!', err.message)
+    }
+    console.log('文件寫入成功!')
+})
+
+})
+```
+
+### [05.演示路徑問題.js](./05.演示路徑問題.js)
+1. * 盡量避免使用***相對路徑***來讀取路徑。
+```
+const fs = require('fs')
+fs.readFile('./day1.txt', 'utf8', function(err, dataStr){
+    if(err){
+        return console.log('文件讀取失敗! ', err.message)
+    }
+
+    console.log('文件讀取成功', dataStr)
+})
+```
+---
+2. * 雖然可以使用***絕對路徑***，但移植性差且不利於維護。
+```
+const fs = require('fs')
+fs.readFile('C:\\Users\\Username\\Desktop\\StudyNotes\\Node.js\\day1\\day1.txt', 'utf8', function(err, dataStr){
+    if(err){
+        return console.log('文件讀取失敗! ', err.message)
+    }
+
+    console.log('文件讀取成功', dataStr)
+```
+---
+3. * 此方法雖然可用，但盡量不要直接拼接，而是用[`path.join()`的方法](./06.path.join方法的使用.js)
+```
+const fs = require('fs')
+console.log(__dirname)
+fs.readFile(__dirname + '/files/day1.txt', 'utf8', function(err, dataStr){
+    if(err){
+        return console.log('文件讀取失敗! ', err.message)
+    }
+
+    console.log('文件讀取成功', dataStr)
+})
+```
