@@ -23,6 +23,7 @@ node 1.js
 ### [01.利用fs模組讀取day1.txt內容.js](./01.利用fs模組讀取day1內容.js)
 
 `const fs = require('fs')` : 導入fs模組，來操作文件。
+
 `fs.readFile('path', [option], 'callback')` : 
 > `path` : 
 > >要讀取的文件路徑，這裡我們讀取在該目錄下的`./day1.txt`文字檔。
