@@ -180,3 +180,61 @@ fs.readFile(__dirname + '/files/day1.txt', 'utf8', function(err, dataStr){
     console.log('文件讀取成功', dataStr)
 })
 ```
+
+### [06.path.join方法的使用.js](./06.path.join方法的使用.js)
+* 我們應當使用這種方式來讀取路徑。
+
+`const path = require('path')` : 導入路徑模組。
+
+`path.join()` : 將所有參數連接在一起並規範化生成的路徑；參數必須是字符串。
+
+```
+const path = require('path')
+const fs = require('fs')
+
+const pathStr02 = path.join(__dirname, '/files/day1.txt')
+console.log(pathStr02)
+fs.readFile(pathStr02, 'utf-8', function(err, dataStr){
+    if(err){
+        console.log('文件讀取失敗', err.message)
+    }
+    console.log('文件讀取成功\n', dataStr)
+})
+```
+
+### [07.path.basename方法使用.js](./07.path.basename方法使用.js)
+
+`path.basename('path', '[extension name]')` : 返迴路徑的最後一部分。
+> `path` : 
+> > 輸入字符串路徑
+>
+> `[extension name]` : 
+> > 輸入路徑的擴展名
+> > > 擴展名 : 如`.html`、`.exe`、`.txt`等等。
+
+```
+const path = require('path')
+
+const fpath = '/a/b/c/d/index.html'
+const fullName = path.basename(fpath)
+console.log(fullName)
+
+const nameWithoutExt = path.basename(fpath, '.html')
+console.log(nameWithoutExt)
+```
+
+### [08.path.extname的方法.js](./08.path.extname的方法.js)
+
+`path.extname()` : 只擷取擴展名
+
+```
+const path = require('path')
+
+const fpath = '/a/b/c/d/e/index.html'
+const fext = path.extname(fpath)
+
+console.log(fext)
+```
+
+### [09.時鐘案例.js](./09.時鐘案例.js)
+* 詳細資訊請點選標題連結
