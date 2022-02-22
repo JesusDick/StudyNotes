@@ -20,7 +20,7 @@ node 1.js
 ```
 
 ## fs模組範例
-### 1. fs模組範例 : [01.利用fs模組讀取day1.txt內容.js](./01.利用fs模組讀取day1內容.js)
+### [01.利用fs模組讀取day1.txt內容.js](./01.利用fs模組讀取day1內容.js)
 
 `const fs = require('fs')` : 導入fs模組，來操作文件。
 `fs.readFile('path', [option], 'callback')` : 
@@ -45,4 +45,4 @@ fs.readFile('./day1.txt', 'utf8', function(err, dataStr){
 })
 ```
 ---
-### 2. 02.修改01來判斷文件是否讀取成功.js
+### [02.修改01來判斷文件是否讀取成功.js](./02.修改01來判斷文件是否讀取成功.js)
