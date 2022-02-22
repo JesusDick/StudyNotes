@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-fs.readFile('./成績.txt', 'utf8',function(err, dataStr){
+fs.readFile('./files/成績.txt', 'utf8',function(err, dataStr){
     if(err){
         return console.log('文件讀取失敗', err.message)
     }

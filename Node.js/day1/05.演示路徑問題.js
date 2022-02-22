@@ -24,7 +24,7 @@ const fs = require('fs')
 
 // __dirname 表示當前文件所處的目錄
 console.log(__dirname)
-fs.readFile(__dirname + '/day1.txt', 'utf8', function(err, dataStr){
+fs.readFile(__dirname + '/files/day1.txt', 'utf8', function(err, dataStr){
     if(err){
         return console.log('文件讀取失敗! ', err.message)
     }

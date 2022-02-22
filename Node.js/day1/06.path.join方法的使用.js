@@ -5,7 +5,7 @@ const fs = require('fs')
 // const pathStr = path.join('/a', '/b/c', '../', './d', '/e')
 // console.log(pathStr)
 
-const pathStr02 = path.join(__dirname, '/day1.txt')
+const pathStr02 = path.join(__dirname, '/files/day1.txt')
 console.log(pathStr02)
 fs.readFile(pathStr02, 'utf-8', function(err, dataStr){
     if(err){
