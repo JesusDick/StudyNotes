@@ -31,7 +31,7 @@
 >>>1. `./example.txt`  #當前目錄內的文件。
 >>>2. C:\User\username\Desktop\CurrentDir\  #`example.txt`所存在的目錄，`./` 會自動拼接起這段路徑
 
-雖然可以直接使用___絕對路徑___，但是不利於維護且移植性較差；
+雖然可以直接使用***絕對路徑***，但是不利於維護且移植性較差；
 > **所謂*絕對路徑*就是文件所在位置的完整路徑**
 >> ***例如:***
 >>> C:\User\username\Desktop\CurrentDir\example.txt
@@ -65,7 +65,7 @@
 
   2. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
    
-  3. <a name="dirname">`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')` : 此方法雖然可用但盡量避免。。</a>
+  3. <a name="dirname">[`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')` : 此方法雖然可用但盡量避免。](/day1/05.演示路徑問題.js)</a>
 
 ### 2. path語法
    
