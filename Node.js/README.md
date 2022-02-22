@@ -65,7 +65,7 @@
 
   2. `fs.writeFile('存放文件的路徑', 'data', [option], 'callback')` : 用來向指定文件中寫入內容。
    
-  3. <a name="dirname">[`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')` : 此方法雖然可用但盡量避免。](/day1/05.演示路徑問題.js)</a>
+  3. <a id = dirname>[`fs.readFile(__dirname + '讀取文件的路徑' , [options], 'callback')` : 此方法雖然可用但盡量避免。](./day1/05.演示路徑問題.js)</a>
 
 ### 2. path語法
    
