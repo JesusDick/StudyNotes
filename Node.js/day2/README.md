@@ -1,6 +1,6 @@
 # Node.js的第二天
 ## http模組範例
-### [01.創建基本的Web服務器](./01.創建基本的Web服務.js)
+### [01.創建基本的Web服務器.js](./01.創建基本的Web服務.js)
 1. `const server = http.createServer()` : 創建一個服務器，命為`server`。
 2. `server.on('request', function(req, res){})` : 為服務器開啟監聽事件，監聽`request`請求。
     > `request` : 當有網頁遭到瀏覽就會觸發此事件。
