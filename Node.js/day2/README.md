@@ -116,7 +116,7 @@ server.listen(80, () => {
 1. `const url = req.url` : `url`只有獲取***根路徑***(`/`)
 * 如果我們要想獲取到`index.html`檔，那我們必須要在搜尋欄手動打上`/clock/index.html`。
 
-2. `index.html` : 內會自動獲取同級目錄(`/clock`)的`/index.js`、`/index.css`，兩個文件`。
+2. `index.html` : 內會自動獲取同級目錄(`/clock`)的`/index.js`、`/index.css`，兩個文件。
     > 因為在`index.html`檔內有 : 
     >> `<link rel="stylesheet" href="./index.css">`
     >>
