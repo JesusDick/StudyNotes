@@ -18,7 +18,7 @@
 
 ![範例圖片](範例圖片/圖2.PNG)
 
-> (擷取自擷取自bilibili的黑馬程序員-Node.js)
+> (擷取自bilibili的黑馬程序員-Node.js)
 
 ---
 
