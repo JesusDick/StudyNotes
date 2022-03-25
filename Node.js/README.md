@@ -66,7 +66,7 @@
 > **response響應** : 伺服器回應客戶端的請求。
 
 ![過程圖](範例圖片/http01.png)
-> (擷取自擷取自bilibili的黑馬程序員-Node.js)
+> (擷取自bilibili的黑馬程序員-Node.js)
 
 ## [模塊化的概念](#4-module語法)
 * 其它請參見[module.exports說明目錄](./module.export說明)
