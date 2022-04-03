@@ -262,7 +262,7 @@ echo 'supersede domain-name-servers 8.8.8.8, 8.8.4.4;' >> /etc/dhcp/dhclient.con
 cp /boot/config-4.15.0-142-generic .config
 ```
 
-1. 使用該指令來編譯核心
+2. 使用該指令來編譯核心
 ```
 make menuconfig
 ```
