@@ -207,8 +207,10 @@ replot
 <img src="./pict/GIF01.png"  height="250">
 
 <img src="./pict/GIF02.png"  height="250">
-![圖表](./GIF03.png)
-![圖表](./GIF04.png)
+
+<img src="./pict/GIF03.png" >
+
+<img src="./pict/GIF04.png" >
 
 ---
 
