@@ -281,7 +281,7 @@ replot
 ### 講解 : 
 **h1** `ping` **h2**，此時 **h3** 是收不到封包的，可以用 **Portstealing** 去騙 **Bridge**，讓 **Bridge** 以為 **h3** 是 **h1** 和 **h2**，從而把封包丟給 **h3**，使用**ARP綁定** 是沒辦法防範的，因為 **h1** 的 **ARP紀錄** 是 **h2**，但 **Bridge** 沒有綁定，防範的話要讓 **Bridge** 將3台機器的 **IP + MAC位址** 給綁定起來就行了。
 
-### 過程 :
+### 實操 :
 
 ### 1. 編譯程式
 
@@ -324,7 +324,7 @@ if '__main__'==__name__:
   net.stop()
 ```
 ---
-### 2. 啟動
+### 2. 執行
     
     root@ubuntu:/home/ubuntu/S110710546-mininet# ./Portstealing.py
 
@@ -351,22 +351,27 @@ root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.2 00:00:00:00:00:
 
 <img src="./pict/arp.png" width='450' height='500'>
 
-6. h1`ping`h2
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ping 192.168.10.2`
-7. h3開啟ettercap
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ettercap -G`
-8. 開始攻擊
-![攻擊](./ettercap01.png)
-![攻擊](./ettercap02.png)
-![攻擊](./ettercap03.png)
-![攻擊](./ettercap04.png)
-![攻擊](./ettercap05.png)
-![攻擊](./ettercap06.png)
-![攻擊](./ettercap07.png)
-![攻擊成功](./wireshark02.png)
+### 6. h1`ping`h2
 
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ping 192.168.10.2
 
+### 7. h3開啟ettercap
 
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ettercap -G
 
+### 8. 開始攻擊
+![攻擊](./pict/ettercap01.png)
 
+![攻擊](./pict/ettercap02.png)
 
+![攻擊](./pict/ettercap03.png)
+
+![攻擊](./pict/ettercap04.png)
+
+![攻擊](./pict/ettercap05.png)
+
+![攻擊](./pict/ettercap06.png)
+
+![攻擊](./pict/ettercap07.png)
+
+![攻擊成功](./pict/wireshark02.png)
