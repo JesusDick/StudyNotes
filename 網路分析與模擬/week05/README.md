@@ -332,7 +332,7 @@ if '__main__'==__name__:
 
     mininet> h1 h2 h3 h3
 
-### 4. 其中一個h3開啟wireshark監看
+### 4. 其中一個 h3 的中端機開啟wireshark監看
     
     root@ubuntu:/home/ubuntu/S110710546-mininet# wireshark
 
@@ -355,7 +355,7 @@ root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.2 00:00:00:00:00:
 
     root@ubuntu:/home/ubuntu/S110710546-mininet# ping 192.168.10.2
 
-### 7. h3開啟ettercap
+### 7. 在另一個 h3 的終端機上開啟ettercap
 
     root@ubuntu:/home/ubuntu/S110710546-mininet# ettercap -G
 
