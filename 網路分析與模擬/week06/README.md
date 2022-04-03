@@ -97,11 +97,13 @@ if '__main__'==__name__:
 
 ## 動態繪圖
 * 以下指令為刪除空白行，。
-* `sed -i '/^$/d' process.sh`
-#### 1. 編譯`process.sh`檔
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gedit process.sh`
----
+    
+    `sed -i '/^$/d' process.sh`
 
+### 1. 編譯`process.sh`檔
+    
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gedit process.sh
+---
 ```
 filename='a'	#將`a`檔中的資料，儲存在`filename`變數裡面。
 > result		#清除`result`檔裡面的資料
@@ -112,7 +114,7 @@ do
    if [ -s "$filename" ]	#讀取`filename`檔有沒有內容，若有為真則繼續往下執行。
    then
         #echo "$filename is NOT empty file."
-        while IFS= read -r line	#讀取`filename`內的每一列資料
+        while IFS= read -r line	    #讀取`filename`內的每一列資料
         do
           result=`echo "$line" | grep "sec"`	#把每一列沒有`sec`字串的資料過濾掉，並且存到`result`變數內。
           if [[ -n $result ]]	#若`result`有內容，`b = 'done'`並跳出迴圈
@@ -143,9 +145,13 @@ do
 done < a
 ```
 
-#### 2. 編譯`plot-throughput.sh`檔
+### 2. 編譯`plot-throughput.sh`檔
+
 * 此檔案在判斷`result`內有沒有東西，如果`result`內沒東西，就畫圖會出現錯誤。
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gedit plot-throughput.sh`
+
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# gedit plot-throughput.sh
+```
 ---
 ```
 filename='result'
@@ -161,10 +167,15 @@ done
 gnuplot gnuplot-plot
 ```
 
-#### 3. 編譯`gnuplot-plot`檔
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gedit gnuplot-plot`
+### 3. 編譯`gnuplot-plot`檔
+
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gedit gnuplot-plot
+
 ---
-`plot FILE u 1:2 every ::lPnts w lp pt 7` : 繪出`result`內容，使用第1行和第2行，lp : 用點跟線的方式繪圖，`pt 7`為點的顆粒大小為7
+1. `plot FILE u 1:2 every ::lPnts w lp pt 7` : 繪出`result`內容，使用第1行和第2行
+    > `lp` : 用點跟線的方式繪圖，linespoints的縮寫
+    >
+    >`pt 7`為點的顆粒大小為7
 ```
 FILE = 'result'
 stop = 0
@@ -184,54 +195,97 @@ while (!stop){
 }
 ```
 
-#### 4. 執行線路設定檔(3-1.py)
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py`
-#### 5. 啟動節點終端
-`mininet> xterm h1 h3 h3 h3`
-* 在其中一個h3執行`process.sh`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./process.sh`
-* 在其中一個h3執行`plot-throughput.sh`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./plot-throughput.sh`
-* 在最後一個此h3接收數據資料
-> 將接收到的資料儲存到檔名 : `a` 的檔案。
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 > a`
-* 在h1傳送測試封包
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 100`
+### 4. 執行線路設定檔(3-1.py)
+* 在執行程式前記得把 **loss** 改回 **0%**。
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py
+```
 
-#### 5. 成功之後的畫面
-![動態繪圖](./動態.png)
+### 5. 啟動節點終端
+    
+    mininet> xterm h1 h3 h3 h3
 
-### linux核心介紹
-1. 先到官網下載linux kernal
-`wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.32.tar.xz`
-*如果不能下載可以輸入以下指令，並重新開機(`reboot`)。
-`echo 'supersede domain-name-servers 8.8.8.8, 8.8.4.4;' >> /etc/dhcp/dhclient.conf`
-2. 解壓縮包
-`tar xfJ linux-5.15.32.tar.xz`
-3. 進入核心檔
-`cd linux-5.15.32`
-4. 核心檔介紹
-`arch` : 該檔案存放許多種CPU指令集架構，如***x86***、***arm64***、***arm***等等，表示linux支援很多種架構。
-`fs` : 該檔案存放很多檔案系統，如***ext2***、***fat***、***exfat***，表示linux支援多種檔案系統。
-`mm` : 稱為記憶體管理(memory management)，有關記憶體的配置都在該檔案內。
-5. 編輯核心配置
+1. 在其中一個h3執行`process.sh`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# ./process.sh
+```
+2. 在其中一個h3執行`plot-throughput.sh`
+```
+`root@ubuntu:/home/ubuntu/S110710546-mininet# ./plot-throughput.sh
+```
+3. 在最後一個 **h3** 接收數據資料
+
+* 將接收到的資料儲存到檔名 : `a` 的檔案。
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 > a
+```
+4. 在h1傳送測試封包
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 100
+```
+
+### 6. 成功之後的畫面
+
+![動態繪圖](./pict/動態.png)
+
+## linux核心介紹
+### 1. 先到官網下載linux kernal
+```
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.32.tar.xz
+```
+* 如果不能下載可以輸入以下指令，並重新開機(`reboot`)。
+```
+echo 'supersede domain-name-servers 8.8.8.8, 8.8.4.4;' >> /etc/dhcp/dhclient.conf
+```
+
+### 2. 解壓縮包
+
+    tar xfJ linux-5.15.32.tar.xz
+
+### 3. 進入核心檔
+
+    cd linux-5.15.32
+
+### 4. 核心檔介紹
+1. `arch` : 該檔案存放許多種CPU指令集架構，如 ***x86***、***arm64***、***arm***等等，表示linux支援很多種架構。
+2. `fs` : 該檔案存放很多檔案系統，如 ***ext2***、***fat***、***exfat***，表示linux支援多種檔案系統。
+3. `mm` : 稱為記憶體管理(memory management)，有關記憶體的配置都在該檔案內。
+
+    ![核心檔內部圖](./pict/核心檔.png)
+
+### 5. 編輯核心配置
+
 * 可以先檢查自己的核心，使用 : `uname -r`
-`cp /boot/config-4.15.0-142-generic .config` : 表示拿當前核心的配置，當作目前我要編譯的核心的預設配置
-`make menuconfig` : 使用該指令來編譯核心。
-![核心編譯](./kernal.png)
+
+1. 拿當前核心的配置，當作目前我要編譯的核心的預設配置
+```
+cp /boot/config-4.15.0-142-generic .config
+```
+
+1. 使用該指令來編譯核心
+```
+make menuconfig
+```
+
+![核心編譯](./pict/kernal.png)
+
 [更詳細的內容說明可以點我](https://wiki.gentoo.org/wiki/Kernel/Configuration/zh-cn)
 
-### 創建虛擬區域網路
-1. 加載8021q模組
-`modprobe 8021q`
-* 查看加載的模組
-`lsmod`
-* 移除模組
-`rmmod [模組名]`
-2. 下載vlan
-`apt install vlan`
-3. 編譯mininet網路環境
-`gedit vlan.py`
+## 創建虛擬區域網路
+### 1. 加載8021q模組
+    
+    modprobe 8021q
+
+* 查看加載的模組 : `lsmod`
+* 移除模組 : `rmmod [模組名]`
+
+### 2. 下載vlan
+
+    apt install vlan
+
+### 3. 編譯mininet網路環境
+    
+    gedit vlan.py
 ---
 ```
 #!/usr/bin/env python
@@ -294,9 +348,15 @@ if '__main__' == __name__:
   h4.cmd("ip route add default via 192.168.20.254")
   CLI(net)
   net.stop()
-
 ```
 
+### 4. 執行
 
+    ./vlan.py
 
+### 5. 測試
+* 我們可以直接在 **mininet** 的命令列介面，測試就可以了
 
+```
+mininet> h1 ping h3
+```
