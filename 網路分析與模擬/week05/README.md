@@ -208,9 +208,9 @@ replot
 
 <img src="./pict/GIF02.png"  height="250">
 
-<img src="./pict/GIF03.png" >
+<img src="./pict/GIF03.png" height="250">
 
-<img src="./pict/GIF04.png" >
+<img src="./pict/GIF04.png" height="250">
 
 ---
 
