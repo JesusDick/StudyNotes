@@ -2,9 +2,9 @@
 
 ## 網路設定的算法，以第五週的[線路設定](https://github.com/JesusDick/StudyNotes/tree/master/%E7%B6%B2%E8%B7%AF%E5%88%86%E6%9E%90%E8%88%87%E6%A8%A1%E6%93%AC/week05#%E7%B7%9A%E8%B7%AF%E7%9A%84%E8%A8%AD%E5%AE%9A)
 
-### 網路構造圖
+* ###  網路構造圖
 
-<img src="./pict/網路想像圖.png" width="500" height="300">
+    <img src="./pict/網路想像圖.png" width="500" height="300">
 
 1. `bw` : 頻寬，也就是在該線路上可以傳輸的最大流量，設定成100Mbs通常會是接近100Mbs，並不會真的跑到100Mbs。
 
@@ -44,13 +44,23 @@ if '__main__'==__name__:
   CLI(net)
   net.stop()
 ```
----
-### delay的過程如下圖
 
-<img src="./pict/delay.png" width="400" height="250">
+### 1. 執行該程式
+
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py
+
+### 2. 開啟節點h1的終端
+
+    mininet> xterm h1
+
+---
+
+* ### delay的過程如下圖
+
+    <img src="./pict/delay.png" width="400" height="250">
 
 因為設定成1ms，所以至少會延遲4ms，才會收到回來的包
-在傳輸過程中會有***propagation delay(傳播延遲)***、***queuing delay(排隊時延)***、***processing time(處理時間)***
+在傳輸過程中會有 ***propagation delay(傳播延遲)***、***queuing delay(排隊時延)***、***processing time(處理時間)***
 
 1. ***propagation delay(傳播延遲)*** : 基本上就是我們代碼內的設定1ms
 
@@ -63,17 +73,17 @@ if '__main__'==__name__:
 
 ---
 
-### loss過程如下圖
+* ### loss過程如下圖
 
-<img src="./pict/loss.png" width="400" height="250">
+    <img src="./pict/loss.png" width="400" height="250">
 
-因為設定成 **0%**，所以封包的傳送和收到基本上會是100%，但 **router節點** 有所謂的 ***queue(佇列)***，當該 **router節點** 內的封包過多，就會被丟棄。
+因為設定成 **0%**，所以封包的傳送和收到基本上會是 **100%**，但 **router節點** 有所謂的 ***queue(佇列)***，當該 **router節點** 內的封包過多，就會被丟棄。
 
 ![想像圖](./pict/loss02.png)
 
-### 將loss率改為10%
+* ### 將loss率改為10%
 
-<img src="./pict/loss03.png" width="400" height="250">
+    <img src="./pict/loss03.png" width="400" height="250">
 
 如果將 **h1** 到 **h2**、**h3** 到 **h2** 的loss設定10%，當我傳送1000個封包，平均會收到656個封包左右。
 
