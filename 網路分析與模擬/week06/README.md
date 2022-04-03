@@ -175,7 +175,7 @@ gnuplot gnuplot-plot
 1. `plot FILE u 1:2 every ::lPnts w lp pt 7` : 繪出`result`內容，使用第1行和第2行
     > `lp` : 用點跟線的方式繪圖，linespoints的縮寫
     >
-    >`pt 7`為點的顆粒大小為7
+    >`pt 7` : 點的顆粒大小為7
 ```
 FILE = 'result'
 stop = 0
