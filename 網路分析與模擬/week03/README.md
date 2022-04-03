@@ -95,7 +95,15 @@ root@ubuntu:/home/ubuntu# ip netns add net2
 
         root@ubuntu:/home/ubuntu# ip netns exec net2 ip link set dev eth0 up
 
-### 5. 將veth pair的另一頭掛載橋接網路，並啟動。
+### 5. 查看各個網路空間的設定
+```
+root@ubuntu:/home/ubuntu# ip netns exec net0 ip addr show
+root@ubuntu:/home/ubuntu# ip netns exec net1 ip addr show
+root@ubuntu:/home/ubuntu# ip netns exec net2 ip addr show
+```
+![設定圖片](./pict/p0.png)
+
+### 6. 將veth pair的另一頭掛載橋接網路，並啟動。
 
 1. 掛接
 ```
@@ -115,7 +123,7 @@ root@ubuntu:/home/ubuntu# ip link set dev veth2 up
 root@ubuntu:/home/ubuntu# ip link set dev veth4 up
 ```
 
-### 6. 測試1
+### 7. 測試1
 * 我們將所以網路空間都接上橋接網路後就可以測試
 `net0`，剛剛我們設定了它的IP(`10.0.1.1/24`)
 
@@ -125,7 +133,7 @@ root@ubuntu:/home/ubuntu# ip netns exec net0 ip ping 10.0.1.2 -c 3
 root@ubuntu:/home/ubuntu# ip netns exec net0 ip ping 10.0.1.3 -c 3
 ```
 
-### 7. 測試2(網頁伺服器)
+### 8. 測試2(網頁伺服器)
 * 我們將開啟一個簡單的網頁伺服器，並測試是否可以連上該網頁。
 
 1. 在`net1`開一個簡易伺服器
@@ -140,7 +148,7 @@ root@ubuntu:/home/ubuntu# ip netns exec net0 curl http://10.0.1.2/hi.htm
 ```
 ![成功圖](/網路分析與模擬/week03/pict/p1.png)
 
-## 清除設定。
+## 清除設定
 
 ### 1. 清除橋接網路掛接。
 ```
@@ -257,5 +265,7 @@ root@ubuntu:/home/ubuntu# ip addr add 10.0.2.254/24 dev veth2
 ### 9. 測試
 ```
 root@ubuntu:/home/ubuntu# ip netns exec net0 ping 10.0.2.1 -c 3
+root@ubuntu:/home/ubuntu# ip netns exec net1 ping 10.0.1.1 -c 3
 ```
+![](./pict/p3.png)
 # 第二周結束
