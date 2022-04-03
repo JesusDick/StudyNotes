@@ -25,7 +25,7 @@ root@ubuntu:/home/ubuntu# cd /home/ubuntu/mininet
 ***iperf***最主要的目的是用來進行效能的量測、比較，
 我們可以用來測試，將封包從`h1`傳到`h3`有多快，`h2`是路由。
 
-### 1. 首先切到目錄、執行、開啟`h1`,`h3`的節點終端。
+### 1. 首先切到目錄、執行、開啟`h1`，`h3`的節點終端。
 
 ```
 root@ubuntu:/home/ubuntu# cd S110710546-mininet/
