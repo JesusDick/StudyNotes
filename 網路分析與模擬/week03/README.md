@@ -199,46 +199,46 @@ root@ubuntu:/home/ubuntu# ip link add type veth
 root@ubuntu:/home/ubuntu# ip link add type veth
 ```
 ### 4. 連接網路空間
-* 連接第一個網路空間
-1. 連接
-```
-root@ubuntu:/home/ubuntu# ip link set dev veth1 netns net0
-```
+1. 連接第一個網路空間
+    
+    連接
 
-2. 重新命名
-```
-root@ubuntu:/home/ubuntu# ip netns exec net0 ip link set dev veth1 name eth0
-```
+        root@ubuntu:/home/ubuntu# ip link set dev veth1 netns net0
 
-3. 設定IP
-```
-root@ubuntu:/home/ubuntu# ip netns exec net0 ip addr add 10.0.1.1/24 dev eth0
-```
 
-4. 啟動
-```
-root@ubuntu:/home/ubuntu# ip netns exec net0 ip link set dev eth0 up
-```
-* 連接第二個網路空間
-1. 連接
-```
-root@ubuntu:/home/ubuntu# ip link set dev veth3 netns net1
-```
+    重新命名
 
-2. 重新命名
-```
-root@ubuntu:/home/ubuntu# ip netns exec net1 ip link set dev veth3 name eth0
-```
+        root@ubuntu:/home/ubuntu# ip netns exec net0 ip link set dev veth1 name eth0
 
-3. 設定IP
-```
-root@ubuntu:/home/ubuntu# ip netns exec net1 ip addr add 10.0.2.1/24 dev eth0
-```
 
-4. 啟動
-```
-root@ubuntu:/home/ubuntu# ip netns exec net1 ip link set dev eth0 up
-```
+    設定IP
+
+        root@ubuntu:/home/ubuntu# ip netns exec net0 ip addr add 10.0.1.1/24 dev eth0
+
+
+    啟動
+
+        root@ubuntu:/home/ubuntu# ip netns exec net0 ip link set dev eth0 up
+
+2. 連接第二個網路空間
+    
+    連接
+        
+        root@ubuntu:/home/ubuntu# ip link set dev veth3 netns net1
+
+    重新命名
+
+        root@ubuntu:/home/ubuntu# ip netns exec net1 ip link set dev veth3 name eth0
+
+    設定IP
+
+        root@ubuntu:/home/ubuntu# ip netns exec net1 ip addr add 10.0.2.1/24 dev eth0
+
+
+    啟動
+
+        root@ubuntu:/home/ubuntu# ip netns exec net1 ip link set dev eth0 up
+
 ### 5. 為網路空間加上內定路由
 ```
 root@ubuntu:/home/ubuntu# ip netns exec net0 ip route add default via 10.0.1.254
