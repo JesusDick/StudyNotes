@@ -25,47 +25,69 @@ root@ubuntu:/home/ubuntu# cd /home/ubuntu/mininet
 ***iperf***最主要的目的是用來進行效能的量測、比較，
 我們可以用來測試，將封包從`h1`傳到`h3`有多快，`h2`是路由。
 
-1. 首先切到目錄、執行、開啟`h1`,`h3`的節點終端。
-`root@ubuntu:/home/ubuntu# cd S110710546-mininet/`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./3.py`
-`mininet> xterm h1 h3`
+### 1. 首先切到目錄、執行、開啟`h1`,`h3`的節點終端。
 
-2. 設定***iperf***接收端和發送端
-* 1. 讓`h3`成為接收端(server端)
+```
+root@ubuntu:/home/ubuntu# cd S110710546-mininet/
+root@ubuntu:/home/ubuntu/S110710546-mininet# ./3.py
+mininet> xterm h1 h3
+```
+
+### 2. 設定***iperf***接收端和發送端
+1. 讓`h3`成為接收端(server端)
+   
 * 預設似乎就是接收**TCP**，**UDP**需要特別設置`-u`的選項
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1
+```
 > `-s` : 成為server端，也就是接收端。
+> 
 > `-i 1` : 每一秒的間隔，`-i` = interval(間隔)
-* 2. 讓`h1`成為發送端(client端)
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 10`
-> `-c [server IP]` : 設置為client端(發送端)，發送封包給`h3`
-> `-t [time]` : 封包發送的時間，假設server端設`-i 2`client端`-t 10`那就只會有5個封包傳送。
-![成功圖](./iperf.png)
 
-2-1. iperf改用UDP接收，並指定埠號和頻寬
+2. 讓`h1`成為發送端(client端)
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 10
+```
+> `-c [server IP]` : 設置為client端(發送端)，發送封包給`h3`
+> 
+> `-t [time]` : 封包發送的時間，假設server端設`-i 2`client端`-t 10`那就會傳送5個封包左右。
+
+![成功圖](./pict/iperf.png)
+
+### 2-1. iperf改用UDP接收，並指定埠號和頻寬
 * h3的終端機
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 -u -p 6666`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 -u -p 6666
+```
 > `-u` : 接收UDP封包
+> 
 > `-p [n]` : 使用指定的埠號接收，預設5001
+
 * h1的終端機
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -u -b 100M -t 100 -p 6666`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -u -b 100M -t 100 -p 6666
+```
 > `-u` : 使用UDP的方式傳送封包。
+> 
 > `-b [n(M | K)]` : 當你使用UDP傳送時，需要告訴UDP要傳多快，預設1Mb。
+> 
 > `-p [n]` : 指定傳送的埠號。
 
 ---
 
-### 線路的設定
-* 我將從上禮拜的[第三個程式](3.py)，去進行修改。
-1. 複製
-`root@ubuntu:/home/ubuntu/S110710546-mininet# cp 3.py 3-1.py`
-2. 編譯
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gedit 3-1.py`
+## 線路的設定
+* 我將從上禮拜的[第三個程式](https://github.com/JesusDick/StudyNotes/tree/master/%E7%B6%B2%E8%B7%AF%E5%88%86%E6%9E%90%E8%88%87%E6%A8%A1%E6%93%AC/week04#第三個程式)，去進行修改。
+### 1. 複製
+    
+    root@ubuntu:/home/ubuntu/S110710546-mininet# cp 3.py 3-1.py
+
+### 2. 編譯
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gedit 3-1.py
 ---
-`h1r={'bw':100,'delay':'1ms','loss':0}` : 將線路參數的頻寬改成100M，延遲改成1毫秒，遺失率0%。
-`net.addLink(h1,h2,cls=TCLink,**h1r)` : 取代原本的`Link(h1,h2)`，節點`h1`連`h2`且連接類為TCLink，連接參數為`h1r`。
-`h2r={'bw':100,'delay':'1ms','loss':0}` : 同上原理。
-`net.addLink(h3,h2,cls=TCLink,**h2r)` : 同上原理。
+1. `h1r={'bw':100,'delay':'1ms','loss':0}` : 將線路參數的頻寬改成100M，延遲改成1毫秒，遺失率0%。
+2. `net.addLink(h1,h2,cls=TCLink,**h1r)` : 取代原本的`Link(h1,h2)`，節點`h1`連`h2`且連接類型為**TCLink**，連接參數為`h1r`。
+3. `h2r={'bw':100,'delay':'1ms','loss':0}` : 同上原理。
+4. `net.addLink(h3,h2,cls=TCLink,**h2r)` : 同上原理。
 
 ```
 #!/usr/bin/python
@@ -99,30 +121,47 @@ if '__main__'==__name__:
   net.stop()
 ```
 ---
-3. 執行
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py`
-4. 開啟節點終端
-`mininet> xterm h1 h3`
-5. 用**iperf**測試線路設定
-![iperf測試圖](./iperf02.png)
+### 3. 執行
+
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py
+
+### 4. 開啟節點終端
+    
+    mininet> xterm h1 h3
+
+### 5. 用**iperf**測試線路設定
+
+![iperf測試圖](./pict/iperf02.png)
 
 ---
 
-### 擷取iperf的資料
-1. 執行
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py`
-2. 開啟節點終端
-`mininet> xterm h1 h3`
-3. 導出資料數據
+## 擷取iperf的資料
+### 1. 執行
+    
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py
+
+### 2. 開啟節點終端
+
+    mininet> xterm h1 h3
+
+### 3. 導出資料數據
 * 把`h3`作為接收端(server端)，並將資料數據結果導出
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 | tee result`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 | tee result
+```
 > `tee [filename]` : 將結果同時輸出到螢幕和檔案
-4. 傳送封包到接收端
+
+### 4. 傳送封包到接收端
 * 把`h1`作為傳送端(client端)，將封包傳送至`h3`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 10`
-5. 擷取特定的資料數據，並導出
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 10
+```
+
+### 5. 擷取特定的資料數據，並導出
 * 如果查結果圖，會發現我們只想要某些欄位的數據，如`Interval`欄位和`Bandwith`欄位
-![結果圖](./result.png)
+
+<img src="./pict/result.png" width='400' height="200">
+
 * 此操作在本機終端上操作，或節點終端上操作都可以。
 `root@ubuntu:/home/ubuntu/S110710546-mininet# cat result | grep sec | head -n 10 | tr "-" " " | awk '{print $4,$8}' > tcp`
 > `grep sec` : 把跟`sec`無關的列都過濾掉
@@ -195,7 +234,7 @@ replot
 ```
 `root@ubuntu:/home/ubuntu/S110710546-mininet# gnuplot gnuplot.plt`
 可以看到當UDP在跑時，TCP幾乎吃不到流量的，等到UDP跑完後TCP流量往上升。
-![結果圖](./tcp-udp.PNG)
+![結果圖](./tcp-udp.png)
 
 ---
 
@@ -255,7 +294,7 @@ if '__main__'==__name__:
 `root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.2 00:00:00:00:00:02`
 * 在h2終端機上
 `root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.1 00:00:00:00:00:01`
-![ARP紀錄](./arp.PNG)
+![ARP紀錄](./arp.png)
 6. h1`ping`h2
 `root@ubuntu:/home/ubuntu/S110710546-mininet# ping 192.168.10.2`
 7. h3開啟ettercap
