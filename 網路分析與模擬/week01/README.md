@@ -30,6 +30,7 @@
     `root@ubuntu:/home/ubuntu/mininet# echo 'mininet' > mininet.htm`
 
     `root@ubuntu:/home/ubuntu/mininet# python -m SimpleHTTPServer 80`
+    
 4. 在***Node : h1***的終端機上連上***Node: h2***的***http***伺服器。
 
     `root@ubuntu:/home/ubuntu/mininet# curl http://10.0.0.2/mininet.htm`
