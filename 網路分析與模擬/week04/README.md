@@ -82,7 +82,7 @@ if '__main__'==__name__:
 ## 第二個程式
 * 延伸第一個程式，將預設的ip客製化。
 
-![想像圖02](./pict/imaginary02.PNG)
+![想像圖02](./pict/imaginary02.png)
 
 ### 1. 複製
 * 因為我們是將**第一個程式**的檔案格式完整複製，所以不需要再更改成可執行檔。
@@ -131,14 +131,14 @@ if '__main__'==__name__:
 
 ### 5.測試
 
-![測試](./pict/test02.PNG)
+![想像圖](./pict/test02.png)
 
 ---
 
 ## 第三個程式
 * 延伸第二個程式，加入路由節點。
 
-![想像圖](./pict/imaginary03.PNG)
+![想像圖](./pict/imaginary03.png)
 
 ### 1. 複製
     root@ubuntu:/home/ubuntu/S110710546-mininet# cp 2.py 3.py
@@ -199,18 +199,18 @@ if '__main__'==__name__:
     
     > `default`和`0.0.0.0`都是內定路由的意思。
 
-![路由設定](./pict/routeshow.PNG)
+![路由設定](./pict/routeshow.png)
 
 ### 6. 測試
 
-![測試](./pict/test03.PNG)
+![測試](./pict/test03.png)
 
 ---
 
 ## 第四個程式
 * 使用用腳本建立橋接網路，將`br0`變成一台橋接器。
 
-![想像圖](./pict/imaginary04.PNG)
+![想像圖](./pict/imaginary04.png)
 
 ### 1. 編寫
 
