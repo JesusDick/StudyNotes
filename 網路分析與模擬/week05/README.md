@@ -160,41 +160,53 @@ root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 10
 ### 5. 擷取特定的資料數據，並導出
 * 如果查結果圖，會發現我們只想要某些欄位的數據，如`Interval`欄位和`Bandwith`欄位
 
-<img src="./pict/result.png" width='400' height="200">
+    <img src="./pict/result.png" width='400' height="200">
 
 * 此操作在本機終端上操作，或節點終端上操作都可以。
-`root@ubuntu:/home/ubuntu/S110710546-mininet# cat result | grep sec | head -n 10 | tr "-" " " | awk '{print $4,$8}' > tcp`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# cat result | grep sec | head -n 10 | tr "-" " " | awk '{print $4,$8}' > tcp
+```
 > `grep sec` : 把跟`sec`無關的列都過濾掉
+> 
 > `heand -n 10` : 只印出頭10行
+> 
 > `tr "-" " "` : 把`-`取代換成` `(空白)，target(`t`)、replace(`r`)
+> 
 > `awk '{print $4,$8}'` : 只顯示第4欄和第8欄，以空格隔開算一欄。
+> 
 > `> tcp` : 導出且檔名為`tcp`
-![擷取結果](./tcp.png)
+
+![擷取結果](./pict/tcp.png)
 
 ---
 
-### 將擷取資料以圖表方式呈現
-1. 編譯程式
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gedit gnuplot.plt`
+## 將擷取資料以圖表方式呈現
+
+### 1. 編譯程式
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gedit gnuplot.plt
 ---
 ```
-plot "tcp" with linespoints		#繪製**tcp**檔以點跟線的方式
-set xlabel "time (sec)"		#設置x軸標籤為time (sec)
+plot "tcp" with linespoints		#繪製tcp檔以點跟線的方式
+set xlabel "time (sec)"		    #設置x軸標籤為time (sec)
 set ylabel "throughput (Mbps)"	#設置y軸標籤為throughput (Mbps)
 set title "TCP Flow Throughput"	#設置標題為TCP Flow Throughput
-set xrange [1:10]			#設置x軸的範圍
-set xtics 1,1,10			#設置間隔，從1到10每隔間隔為1
-set yrange [0:100]			#設置y軸的範圍
-set ytics 0,10,100			#設置間隔，從0到100每隔間隔為10
-set terminal gif			#設置為gif圖檔
+set xrange [1:10]			    #設置x軸的範圍
+set xtics 1,1,10			    #設置間隔，從1到10每隔間隔為1
+set yrange [0:100]			    #設置y軸的範圍
+set ytics 0,10,100			    #設置間隔，從0到100每隔間隔為10
+set terminal gif			    #設置為gif圖檔
 set output "tcp.gif"			#輸出檔名為tcp.gif
 replot
 ```
-2. 執行
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gnuplot gnuplot.plt`
-3. 到該層目錄下查看
-![圖表](./GIF01.png)
-![圖表](./GIF02.png)
+### 2. 執行
+    
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gnuplot gnuplot.plt
+
+### 3. 到該層目錄下查看
+
+<img src="./pict/GIF01.png"  height="250">
+
+<img src="./pict/GIF02.png"  height="250">
 ![圖表](./GIF03.png)
 ![圖表](./GIF04.png)
 
