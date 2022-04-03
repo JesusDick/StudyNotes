@@ -15,7 +15,7 @@
 ---
 1. `from mininet.cli import CLI` : command line interface(CLI)，命令列介面。
    
-    <img src="./pict/CLI.png" width="250" height="200">
+    <img src="./pict/CLI.png" width="300" height="200">
 
 2. `from mininet.net import Mininet` : 最主要是讓我們可以創造網路環境的模組。
 3. `from mininet.link import Link, TCLink, Intf` : 可以幫我們創造點跟點之間的連線。
