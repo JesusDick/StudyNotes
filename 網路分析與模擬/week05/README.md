@@ -214,24 +214,44 @@ replot
 
 ---
 
-### 進階應用
-1. 執行
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py`
-2. 開啟節點終端
-`mininet> xterm h1 h1 h3 h3`
-3. UDP、TCP接收端配置
+## 進階應用
+
+### 1. 執行
+
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ./3-1.py
+
+### 2. 開啟節點終端
+
+    mininet> xterm h1 h1 h3 h3
+
+### 3. UDP、TCP接收端配置
 * h3有兩個，分別配置
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 -p 5555 | tee tcp-result`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 -u -p 6666 | tee udp-result`
-4. UDP、TCP傳送端配置
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 -p 5555 | tee tcp-result
+```
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -s -i 1 -u -p 6666 | tee udp-result
+```
+
+### 4. UDP、TCP傳送端配置
 * h1有兩個分別配置，並同時開始但UDP先
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 50 -p 5555`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -u -b 50M -t 30 -p 6666`
-5. 擷取資料數據
-`root@ubuntu:/home/ubuntu/S110710546-mininet# cat tcp-result | grep sec | head -n 50 | tr "-" " " | awk '{print $4,$8}' > tcp-result02`
-`root@ubuntu:/home/ubuntu/S110710546-mininet# cat udp-result | grep sec | grep -v out-of-order | head -n 30 | tr "-" " " | awk '{print $4,$8}' > udp-result02`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -t 50 -p 5555
+```
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# iperf -c 192.168.2.1 -u -b 50M -t 30 -p 6666
+```
+
+### 5. 擷取資料數據
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# cat tcp-result | grep sec | head -n 50 | tr "-" " " | awk '{print $4,$8}' > tcp-result02
+```
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# cat udp-result | grep sec | grep -v out-of-order | head -n 30 | tr "-" " " | awk '{print $4,$8}' > udp-result02
+```
 > `grep -v out-of-order` : 將有`out-of-order`的數據行排除
-6. 繪成圖表
+
+### 6. 繪成圖表
 * 程式碼要稍微改一下
 ```
 plot "tcp-result02" with linespoints, "udp-result02" with linespoints
@@ -246,20 +266,27 @@ set terminal gif
 set output "tcp_udp.gif"
 replot
 ```
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gnuplot gnuplot.plt`
-可以看到當UDP在跑時，TCP幾乎吃不到流量的，等到UDP跑完後TCP流量往上升。
-![結果圖](./tcp-udp.png)
+---
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gnuplot gnuplot.plt
+
+* 可以看到當UDP在跑時，TCP幾乎吃不到流量的，等到UDP跑完後TCP流量往上升。
+
+![結果圖](./pict/tcp-udp.png)
 
 ---
 
-### 使用ettercap達到Portstealing
+## 使用ettercap達到Portstealing
 * 我會有1台Bridge、3台Host(h1、h2、h3)，h3扮演攻擊者
-講解 : h1`ping`h2，此時h3是收不到封包的，可以用**Portstealing**去騙**Bridge**，
-	讓**Bridge**以為h3是h1和h2，從而把封包丟給h3，使用**ARP綁定**是沒辦法防範的，
-	因為h1的**ARP紀錄**是h2，但**Bridge**沒有綁定，防範的話要讓**Bridge**將3台機器的 IP + MAC位址 給綁定起來就行了。
-過程 :
-1. 編譯程式
-`root@ubuntu:/home/ubuntu/S110710546-mininet# gedit Portstealing.py`
+
+### 講解 : 
+**h1** `ping` **h2**，此時 **h3** 是收不到封包的，可以用 **Portstealing** 去騙 **Bridge**，讓 **Bridge** 以為 **h3** 是 **h1** 和 **h2**，從而把封包丟給 **h3**，使用**ARP綁定** 是沒辦法防範的，因為 **h1** 的 **ARP紀錄** 是 **h2**，但 **Bridge** 沒有綁定，防範的話要讓 **Bridge** 將3台機器的 **IP + MAC位址** 給綁定起來就行了。
+
+### 過程 :
+
+### 1. 編譯程式
+
+    root@ubuntu:/home/ubuntu/S110710546-mininet# gedit Portstealing.py
+
 ---
 ```
 #!/usr/bin/python
@@ -296,19 +323,34 @@ if '__main__'==__name__:
   CLI(net)
   net.stop()
 ```
-2. 啟動
-`root@ubuntu:/home/ubuntu/S110710546-mininet# ./Portstealing.py`
-3. 開啟節點終端
-`mininet> h1 h2 h3 h3`
-4. 其中一個h3開啟wireshark監看
-`root@ubuntu:/home/ubuntu/S110710546-mininet# wireshark`
-![監看](./wireshark01.png)
-5. 綁定arp紀錄
+---
+### 2. 啟動
+    
+    root@ubuntu:/home/ubuntu/S110710546-mininet# ./Portstealing.py
+
+### 3. 開啟節點終端
+
+    mininet> h1 h2 h3 h3
+
+### 4. 其中一個h3開啟wireshark監看
+    
+    root@ubuntu:/home/ubuntu/S110710546-mininet# wireshark
+
+![監看](./pict/wireshark01.png)
+
+### 5. 綁定arp紀錄
+
 * 在h1終端機上
-`root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.2 00:00:00:00:00:02`
+```
+root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.2 00:00:00:00:00:02
+```
 * 在h2終端機上
-`root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.1 00:00:00:00:00:01`
-![ARP紀錄](./arp.png)
+```
+`root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.1 00:00:00:00:00:01
+```
+
+<img src="./pict/arp.png" width='450' height='500'>
+
 6. h1`ping`h2
 `root@ubuntu:/home/ubuntu/S110710546-mininet# ping 192.168.10.2`
 7. h3開啟ettercap
