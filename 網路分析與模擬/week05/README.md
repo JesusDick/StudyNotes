@@ -351,7 +351,7 @@ root@ubuntu:/home/ubuntu/S110710546-mininet# arp -s 192.168.10.2 00:00:00:00:00:
 
 <img src="./pict/arp.png" width='450' height='500'>
 
-### 6. h1`ping`h2
+### 6. h1 傳封包給 h2
 
     root@ubuntu:/home/ubuntu/S110710546-mininet# ping 192.168.10.2
 
