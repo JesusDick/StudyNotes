@@ -18,7 +18,7 @@ apt install ffmpeg -y
 	* 做實驗時還是以較早期的影片拿來做壓縮和串流，
 	因為拿高解析度的影片，壓縮時會耗費較多時間，傳輸時也需要耗費大量頻寬。
 
-2. 複製 **foreman** 底下的 **CIF** 連結
+2. 複製 **foreman** 底下的 ***CIF*** 連結
    * 我是用 **foreman** ，看你自己要用什麼影片，但通常影像的 **frames** 越高，影片播放越久。
 
 ![下載我](./pict/下載我.png)
@@ -28,14 +28,13 @@ apt install ffmpeg -y
 wget https://media.xiph.org/video/derf/y4m/foreman_cif.y4m
 ```
 
-4. 轉換成yuv格式
+4. 轉換成 ***yuv*** 格式
 ```
 ffmpeg -i foreman_cif.y4m foreman_cif.yuv
 ```
 
 * ### 解說2-2小節
 通用影像傳輸格式(Common Intermediate Format) :
-
 1. ***SQCIF*** : 128 × 96 ; 影像解析度
 2. ***QCIF*** : 176 × 144 ; 影像解析度
 3. ***CIF*** : 352 × 288 ; 影像解析度
@@ -44,6 +43,7 @@ ffmpeg -i foreman_cif.y4m foreman_cif.yuv
 
     [更多 CIF 資訊可以點我](https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E5%BD%B1%E5%83%8F%E5%82%B3%E8%BC%B8%E6%A0%BC%E5%BC%8F)
 
+* ### 解說2-4小節
 YUV : 
 是一種顏色編碼的方法，如果直接對 ***RGB*** 進行影像的壓縮或傳輸，可能會造成太大的負擔，所以 ***YUV*** 會對每個 ***RGB*** 進行 **明亮度**、**彩度** 的轉換，
 達到降低負擔。
