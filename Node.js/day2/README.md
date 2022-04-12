@@ -198,3 +198,132 @@ server.listen(80, ()=>{
     console.log('server running at http://127.0.0.1')
 })
 ```
+### [06.自訂模塊.js](./06.自訂模組.js)
+* 該模塊要和[07.使用自訂模塊.js](/07.js)搭配使用
+```
+var test = "你使用了自訂模組範例"
+```
+
+### [07.使用自訂模塊.js](./07.使用自訂模組.js)
+* 該代碼是去執行 **[06.自訂模塊.js](./06.自訂模組.js)** 。
+1. 注意 : 在使用 `require()` 加載用戶自訂義的模組期間，可以省略 **.js** 的副檔名
+2. 使用自訂模塊時，如果該模塊內的函數或方法沒有對外公開的話，是讀取不到該函數或方法的。
+3. 預設導入的自訂義模塊都是 **空對象( `{ }` )**，也就是 ***Node.js*** 自動對外空開的屬性，
+```
+const custom = require('./06.自訂模組')
+console.log(custom)
+```
+
+### [08.模塊作用域.js](./08.模塊作用域.js)
+* 我將在 **[09演示模塊作用域.js](./09.演示模塊作用域.js)** 去執行該模塊。
+我們在該模塊內寫入一些函數代碼，但沒有對外公開它，這跟 [06.自訂模塊.js](./06.自訂模組.js) 很相似。
+```
+const username = '傑夫'
+function sayHello(){
+    console.log('大家好，我是'+ username)
+}
+```
+
+### [09.演示模塊作用域.js](./09.演示模塊作用域.js)
+* 我將會去讀取 **[08.模塊作用域.js](./08.模塊作用域.js)** 的模塊內的變數和方法。
+當我們去執行該代碼時，可以發現得到的是一個 **空對象(`{ }`)**，是因為我們沒有對外公開 **[08.模塊作用域.js](./08.模塊作用域.js)** 內的變數和方法，這點跟 **[07.使用自訂模塊](./07.使用自訂模組.js)** 很像。
+```
+const username = require('./08.模塊作用域')
+console.log(username)
+```
+
+### [10.演示module對象.js](./10.演示module對象.js)
+我們可以在終端機上執行該文件，印出它的所有 **屬性**和 **它所在的位置**。
+```
+console.log(module)
+```
+
+### [11.自訂義模塊.js](./11.自訂義模塊.js)
+* 我們將嘗試對外公開一些變數和方法。
+1. `module.exports.username = '傑瑞'` : 用`module.exports`對外公開`username`這個屬性內的資料(也就是傑瑞這個字串)。
+2. 用`module.export`對外公開 sayHello 方法
+    ```
+    module.exports.sayHello = function(){
+    console.log('Hello Node.js!')
+    }
+    ```
+3. `const age = 20` : 我們之後會對外公開該變數，**現階段可理解為，該變數是這個模塊或代碼內的私有變數**，其他的代碼是無法去使用或讀取到該變數的。
+4. `module.exports.age = age` : 我去對外公開 `age`變數，使他的屬性為 `age`，其他的執行檔想讀取該變數內容時，是使用它對外公開的屬性，也就是 **`age`**。
+5. 我們在讀取自定義模塊時，最終的讀取對象是`module.exports`指向的對象。
+    ```
+    module.exports = {
+        nickname : '小白',
+        sayHi(){
+            console.log('Hi!')
+        }
+    }
+    ```
+---
+```
+module.exports.username = '傑瑞'
+
+
+module.exports.sayHello = function(){
+    console.log('Hello Node.js!')
+}
+
+const age = 20
+
+module.exports.age = age
+
+module.exports = {
+    nickname : '小白',
+    sayHi(){
+        console.log('Hi!')
+    }
+}
+```
+
+### [12.導入11模塊.js](./12.導入11模塊.js)
+* 在外界使用 `require()` 導入一個自訂義模塊的時候，得到的成員就是那個模塊中使用 `module.export` 指向的那個對象
+```
+const m = require('./11.自訂義模塊')
+
+console.log(m)
+```
+
+### [13.export對象.js](./13.export對象.js)
+* 我們將介紹 **`module.exports`** 的簡化寫法。
+我們完全可以使用 `exports` 這個簡化寫法去取代 `module.exports`，
+執行該代碼就可以發現 `exports` 是全等於 `module.exports` 的屬性。
+```
+console.log(exports)
+console.log(module.exports)
+
+console.log(exports === module.exports)
+```
+
+### [14.exports的最終對象.js](./14.export的最終對象.js)
+1. 我們可以使用`exports`去對外公開 **變數** 和 **方法** 的，效果和使用 `module.exports` 是一樣的。
+2. 但是在我們讀取該模塊時，最終向外共享的對象，永遠都是 `module.exports` 所指向的為主。
+```
+const username = '傑瑞'
+
+exports.username = username
+
+exports.age =20
+
+exports.sayHello = function(){
+    console.log('大家好!，我是傑瑞')
+}
+
+module.exports = {
+    nickname : '小傑',
+    sayHi(){
+        console.log('我是小傑!')
+    }
+}
+```
+
+### [15.導入14模塊查看最後對象.js](./15.導入14模塊查看最後對象.js)
+1. 我們將去執行[14.exports的最終對象.js](./14.export的最終對象.js)，看看效果是否一樣
+2. 並驗證最終向外共享的對象是否為 `module.exports` 所指向的為主，我可以去嘗試註解[14.exports的最終對象.js](./14.export的最終對象.js)的 ***14-19行*** 看看差別。
+```
+const m = require('./14.export的最終對象')
+console.log(m)
+```
