@@ -27,10 +27,11 @@
 const [名稱] = require('[模塊名稱]')
 ```
 2. [加載用戶自訂的模塊](./day2/07.使用自訂模組.js)
+* 例如 : const custom = require('./custom')
 ```
 const [名稱] = require('[該檔案的路徑位置]')
 ```
-* 例如 : const custom = require('./custom')
+
 
 1. 導入第三方模塊前都必須先[下載該模塊](./指令.md)
 ```
