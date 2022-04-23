@@ -1,0 +1,1 @@
+console.log("加載了index.js")
