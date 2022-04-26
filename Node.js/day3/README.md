@@ -71,3 +71,6 @@ const dt = new Date()
 const newDT = TIME.dateformat(dt)
 console.log(newDT)
 ```
+
+## [03.使用moment對時間進行格式化.js](./03.使用moment對時間進行格式化.js)
+* ### 關於如何[下載第三方模塊可以看篇](../指令.md#安裝第三方套件)
