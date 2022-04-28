@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>測試接口跨域問題</title>
+        <script src="http://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    </head> 
+    <body>
+        <button id="btnGET">GET</button>
+        <button id="btnPOST">POST</button>
+
+        <script>
+            $(function(){
+                // 1. 測試GET接口
+                $('#btnGET').on('click',function(){
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://127.0.0.1/api/get',
+                        data: {name: 'jerry', age: 20},
+                        success: function (res) {
+                            console.log(res)
+                        }
+                    })
+                })
+                // 2. 測試POST接口
+                $('#btnPOST').on('click',function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://127.0.0.1/api/post',
+                        data: {bookname: '老人與海', author: '厄尼斯特·海明威'},
+                        success: function (res) {
+                            console.log(res)
+                        }
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>

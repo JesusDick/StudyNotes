@@ -28,6 +28,7 @@ app.get('/', (req,res) => {
 })
 
 // 注意: 這裡的 :id 是一個動態的參數
+// 例如 : 可以在瀏覽器的搜尋欄輸入 http://127.0.0.1/user/2/jerrey 測試
 app.get('/user/:ids/:name', (req,res) => {
     // req.params 是動態匹配到的 URL 參數，默認也是一個空對象
     console.log(req.params)
