@@ -71,7 +71,8 @@ app.use(express.static('./clock'))
 app.use(express.static('./files'))
 ```
 > 若 **clock** 和 **files** 都有 `index.html`檔，因 **clock** 目錄先於 **files** 目錄被 `express.static()` 函數讀取，所以會先顯示 **clock** 目錄內的 `index.html`檔。
-> 若 **clock** 目錄沒有 `index.html`檔，才會往 `files` 檔內讀取。
+>
+> 若 **clock** 目錄沒有 `index.html`檔，才會往 **files** 目錄內讀取。
 
 ## 5-3. [掛載路徑前綴](./day4/04.在express.static前掛載路徑前綴.js)
 * 注意 : 一般掛載的前綴會和訪問目錄同名。
