@@ -3,7 +3,7 @@
 * ### 若想查看結果可以使用 [Postman](https://www.postman.com/)，需要註冊和下載桌面代理。
 執行下方程式碼，並打開 **Postman** 查看，並將網址如下圖的方式輸入到 **Postman** 的網址欄中。
 
-<img src="./pict/使用Postman.png" width="60%">
+<img src="./pict/使用Postman.png" width="70%">
 
 * 並且欄位左邊的下拉選單可以選擇使用的方法
 
