@@ -25,11 +25,11 @@
 10. `console.log(req.params)` : 將獲取到的動態參數，打印在終端介面上。
 11. `res.send(req.params)` : 將獲取到的動態參數，響應回客戶端上。
 12. 啟動 Web 服務器 :
-```js
-app.listen(80, () => {
-    console.log('express server running at http://127.0.0.1')
-})
-```
+    ```js
+    app.listen(80, () => {
+        console.log('express server running at http://127.0.0.1')
+    })
+    ```
 ---
 ```js
 const express = require('express')
@@ -103,11 +103,11 @@ app.listen(80, () => {
 ```
 
 ## [03.託管多個靜態資源.js](./03.託管多個靜態資源.js)
-要想託管多個靜態資源，只要重複調用 `express.static()` 即可。
+1. 要想託管多個靜態資源，只要重複調用 `express.static()` 即可。
 
-但這會涉及到 **優先順序問題**，因 **files 和 clock** 目錄內都有 `index.html` 檔，但 **files** 目錄先被 `express.static()` 讀取，所以會先顯示 **files** 目錄內的 `index.html`。
+2. 但這會涉及到 **優先順序問題**，因 **files 和 clock** 目錄內都有 `index.html` 檔，但 **files** 目錄先被 `express.static()` 讀取，所以會先顯示 **files** 目錄內的 `index.html`。
 
-要想解決這問題可以使用 [04.在express.static前掛載路徑前綴.js](./04.在express.static前掛載路徑前綴.js) 內的寫法解決；介紹將會在下面的主題講解。
+3. 要想解決這問題可以使用 [**04.在express.static前掛載路徑前綴.js**](./04.在express.static前掛載路徑前綴.js) 內的寫法解決；介紹將會在下面的主題講解。
 ```js
 const express = require('express')
 const app = express()
@@ -213,20 +213,20 @@ module.exports = router
 
 
 1. 定義一個最簡單的中間件函數 :
-```js
-const mw = function(req, res, next){
-    console.log('這是最簡單的中間件函數')
-    
-    next()
-}
-```
+    ```js
+    const mw = function(req, res, next){
+        console.log('這是最簡單的中間件函數')
+        
+        next()
+    }
+    ```
 > **next()** :
 >> 把流轉關係，轉交給下一個中間件或路由
 >
 > 簡單說明 : 
 >> 中間件享有共同的 `req`、`res` 函數，也就是說在中間件處理過的 `req`、`res` 函數，會轉交給下個中間件或路由，就像推積木一樣，一層層的推積。
 
-2. `app.use(mw)` : 將 mw 註冊為全局生效的中間件。
+2. `app.use(mw)` : 將 `mw` 註冊為全局生效的中間件。
 ```js
 const express = require('express')
 const app = express()
@@ -326,19 +326,19 @@ app.listen(80, () => {
     當我訪問路由時(`http://127.0.0.1/user`)，會先通過第一個全局中間件，該中間件會在終端介面打印(`'調用了第一個全局中間件'`)，在通過第二個中間件，該中間件也會再終端介面打印(`'調用了第二個全局中間件'`)，然後才響應客戶端字符串(`'User page.'`)
 ---
 1. 定義第一個全局中間件 :
-```js
-app.use((req, res, next) => {
-    console.log('調用了第一個全局中間件')
-    next()
-})
-```
+    ```js
+    app.use((req, res, next) => {
+        console.log('調用了第一個全局中間件')
+        next()
+    })
+    ```
 2. 定義第二個全局中間件 :
-```js
-app.use((req, res, next) => {
-    console.log('調用了第二個全局中間件')
-    next()
-})
-```
+    ```js
+    app.use((req, res, next) => {
+        console.log('調用了第二個全局中間件')
+        next()
+    })
+    ```
 ---
 ```js
 const express = require('express')
@@ -371,19 +371,19 @@ app.listen(80, () => {
 局部中間件，顧名思義只發生在局部代碼才生效，`mw1` 這個中間件，只在訪問 **當前的路由(`http://127.0.0.1/`)** 中才生效，這種用法屬於 **局部生效中間件**。
 
 1. 定義局部生效中間件 :
-```js
-const mw1 = (req, res, next) => {
-    console.log('調用局部生效的中間件')
-    next()
-}
-```
+    ```js
+    const mw1 = (req, res, next) => {
+        console.log('調用局部生效的中間件')
+        next()
+    }
+    ```
 2. 創建路由，並通過局部生效中間件處理該路由函數 :
-```js
-app.get('/', mw1, (req, res) => {
-    res.send('Home Page')
-    
-})
-```
+    ```js
+    app.get('/', mw1, (req, res) => {
+        res.send('Home Page')
+        
+    })
+    ```
 ---
 ```js
 const express = require('express')
@@ -416,19 +416,18 @@ app.listen(80, () => {
 若多個中間件只處理單一的路由可以使用逗號(`,`)隔開，繼續填充局部中間件名。
 
 1. 多個局部中間件處理單一路由 :
-```js
-app.get('/', mw1, mw2, (req, res) => {
-    res.send('Home Page')
-    
-})
-```
+    ```js
+    app.get('/', mw1, mw2, (req, res) => {
+        res.send('Home Page')
+        
+    })
+    ```
 2. 針對不同路由，使用不同局部中間件 :
-```js
-app.get('/user',mw2, (req, res) => {
-    res.send('user Page')
-})
-
-```
+    ```js
+    app.get('/user',mw2, (req, res) => {
+        res.send('user Page')
+    })
+    ```
 ---
 ```js
 const express = require('express')
@@ -462,17 +461,18 @@ app.listen(80, () => {
 * ### 注意 : 時刻謹記，錯誤級別中間件一定寫在所有路由之後。
 
 1. `throw new Error('服務器內部發生了錯誤')` : 人為的制造錯誤。
-> `new Error()` 構造如下 :
->> new Error([message[, fileName[, lineNumber]]])
+    > `new Error()` 構造如下 :
+    >> new Error([message[, fileName[, lineNumber]]])
+
 2. 定義錯誤級別中間件，捕獲整個項目的異常錯誤，從而防止程序的崩潰 :
-```js
-app.use((err, req, res, next) => {
-    console.log('發生了錯誤\n' + err.message)
-    res.send('Error : ' + err.message)
-})
-```
-> `err.message` :
->> 捕獲從 `throw new Error()` 產生的 `message`(錯誤訊息)。
+    ```js
+    app.use((err, req, res, next) => {
+        console.log('發生了錯誤\n' + err.message)
+        res.send('Error : ' + err.message)
+    })
+    ```
+    > `err.message` :
+    >> 捕獲從 `throw new Error()` 產生的 `message`(錯誤訊息)。
 ---
 
 ```js
@@ -499,6 +499,7 @@ app.listen(80, () => {
 
 ## [14.演示內置中間件的使用.js](./14.演示內置中間件的使用.js)
 * ### 注意 : 除了錯誤級別中間件，其他中間件，必須在路由之前進行配置。
+* 注意 : 默認情況下，如果不配置解析表單數據的中間件，則 `req.body` 默認等於 `undefined`。
 
 1. `app.use(express.json())` : 通過 `express.json` 這個中間件，解析表單中的 **JSON格式** 的數據。
 2. `app.use(express.urlencoded({extended: false}))` : 通過 `express.urlencoded()` 這個中間件，來解析表單中的 **url-encoded格式** 的數據。
@@ -510,7 +511,7 @@ app.listen(80, () => {
         res.send('OK')
     })
     ```
-* 注意 : 默認情況下，如果不配置解析表單數據的中間件，則 `req.body` 默認等於 `undefined`。
+
 ---
 
 ```js
