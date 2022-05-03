@@ -6,9 +6,10 @@ const app = express()
 // 配置表單數據的中間件
 app.use(express.urlencoded({extended: false}))
 
+app.use(express.json())
 
 
-// 蹈入路由模塊
+// 導入路由模塊
 const router = require('./20.apiRouter')
 
 // 先前說過 `app.use()` 就是註冊全局中間件，所以在這邊可以認為 router 就是一個中間件

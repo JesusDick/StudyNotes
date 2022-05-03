@@ -20,7 +20,7 @@ app.use((req, res, next) => {
     // 3. 監聽 req 的 end 事件
     req.on('end', () => {
         // 在 str 中存放的是完整的請求體數據。
-        // console.log(str)
+        //console.log(str)
         // TODO : 把字符串格式的請求體數據，解析成對象格式
         const body = qs.parse(str)
         req.body = body
@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 })
 
 app.post('/user', (req, res) => {
+    //console.log(req.body)
     res.send(req.body)
 })
 

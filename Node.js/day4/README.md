@@ -529,7 +529,6 @@ app.post('/user', (req, res) => {
 })
 
 app.post('/book', (req, res) => {
-    // 在服務器端，可以通過 req.body 來獲取 JSON 格式的表單數據和 url-encoded 格式的數據
     console.log(req.body)
     res.send('OK')
 })
@@ -539,5 +538,217 @@ app.listen(80, () => {
     console.log('server running http://127.0.0.1')
 })
 ```
-* 以上效果可以在 **Postman** ，使用下圖的方式呈現 :
+* 以上 **JSON格式** 的效果可以在 **Postman** ，使用下圖的方式呈現 :
 <img src="./pict/expressJSON.png" width="60%">
+
+* 以上 **url-encoded格式** 的效果可以在 **Postman**，使用下圖的方式呈現 :
+<img src="./pict/expressurlencoded.png" width="60%">
+
+## [15.演示第三方中間件.js](./15.演示第三方中間件.js)
+這裡會簡單帶過，因為跟 [**14.演示內置中間件的使用.js**](./14.演示內置中間件的使用.js) 效果是一樣的。
+
+1. `const parser = require('body-parser')` : 導入解析表單數據的中間件 body-parser。
+2. `app.use(parser.urlencoded({extended: false}))` : 等同於`app.use(express.urlencoded({extended: false}))`。
+
+```js
+const express = require('express')
+
+const app = express()
+
+const parser = require('body-parser')
+
+app.use(parser.urlencoded({extended: false})) 
+
+app.post('/user', (req, res) => {
+    console.log(req.body)
+    
+    res.send('OK')
+})
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [16.自訂義解析表單數據的中間件.js](./16.自訂義解析表單數據的中間件.js)
+1. `const qs = require('querystring')` : 導入 Node.js 內置的 querystring 模塊。
+2. `let str = ''` : 定義一個 `str` 字符串，專門用來儲存客戶端發送過來的請求體數據。
+3. 監聽 req 的 data 事件 :
+   ```js
+    req.on('data', (chunck) => {
+        str += chunck
+    })
+   ```
+   > 我們的資料在傳輸時，不一定是整段傳輸，有可能會將資料分割成片段，這時我們需要重新串接起這些資料。
+   
+4. 監聽 req 的 end 事件 :
+    ```js
+    req.on('end', () => {
+        const body = qs.parse(str)
+        req.body = body
+        next()
+    }) 
+    ```
+    > `const body = qs.parse(str)`
+    >> 把字符串格式的請求體數據，解析成對象格式。
+---
+```js
+const express = require('express')
+
+const qs = require('querystring')
+
+const app = express()
+
+app.use((req, res, next) => {
+    let str = ''
+
+    req.on('data', (chunck) => {
+        str += chunck
+    })
+
+    req.on('end', () => {
+        const body = qs.parse(str)
+        req.body = body
+        next()
+    })
+})
+
+app.post('/user', (req, res) => {
+    res.send(req.body)
+})
+
+
+app.listen(80, (req, res) => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [17.對自訂義的中間件進行模塊化的拆分.js](./17.對自訂義的中間件進行模塊化的拆分.js)
+我們將把 [**16.自訂義解析表單數據的中間件.js**](./16.自訂義解析表單數據的中間件.js) 的解析表單的功能，單獨抽離開來，額外寫成一個模塊，[**18.custom-body-parser.js**](./18.custom-body-parser.js)。
+
+1. `const customBodyParser = require('./18.custom-body-parser')` : 導入自己封裝的中間件模塊。
+2. `app.use(customBodyParser)` : 將自訂義的中間件函數，註冊為全局可用的中間件。
+
+```js
+const express = require('express')
+const app = express()
+
+const customBodyParser = require('./18.custom-body-parser')
+
+app.use(customBodyParser)
+
+app.post('/user', (req, res) => {
+    res.send(req.body)
+})
+
+app.listen(80, (req, res) => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [18.custom-body-parser.js](./18.custom-body-parser.js)
+請執行 [**17.對自訂義的中間件進行模塊化的拆分.js**](./17.對自訂義的中間件進行模塊化的拆分.js) 查看效果。
+
+這與 [**16.自訂義解析表單數據的中間件.js**](./16.自訂義解析表單數據的中間件.js) 解析表單的方式差異不太，差在把它以變數儲存，並對外公開該變數。
+
+```js
+const qs = require('querystring')
+
+const bodyParser = (req, res, next) => {
+    let str = ''
+
+    req.on('data', (chunck) => {
+        str += chunck
+    })
+
+    req.on('end', () => {
+        const body = qs.parse(str)
+        req.body = body
+        next()
+    })
+
+}
+
+module.exports = bodyParser
+```
+
+## [19.使用express寫接口.js](./19.使用express寫接口.js)
+[**19.使用express寫接口.js**](./19.使用express寫接口.js) 的路由，由 [**20.apiRouter.js**](./20.apiRouter.js) 來統一處理。
+
+1. `app.use(express.urlencoded({extended: false}))` : 配置表單數據的中間件。
+2. `const router = require('./20.apiRouter')` : 導入路由模塊。 
+
+```js
+const express = require('express')
+const app = express()
+
+app.use(express.urlencoded({extended: false}))
+app.use(express.json())
+
+const router = require('./20.apiRouter')
+
+app.use('/api', router)
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [20.apiRouter.js](./20.apiRouter.js)
+[**20.apiRouter.js**](./20.apiRouter.js) 只處理 [**19.使用express寫接口.js**](./19.使用express寫接口.js) 的路由，請執行 [**19.使用express寫接口.js**](./19.使用express寫接口.js) 來展示效果。
+
+1. 調用 `res.send()` 方法，向客戶端響應處理的結果 :
+   ```js
+   res.send({
+       status: '0',
+       msg: "GET 請求成功",
+       data: query
+   })
+   ```
+   > `status: '0'` :
+   >> 0 表示處理成功，1 表示處理失敗。
+   >
+   > `msg: "GET 請求成功"` :
+   >> 狀態的描述。
+   >
+   > `data: query` :
+   >> 需要響應給客戶端的數據。
+
+2. 向客戶端響應 **HTTP狀態碼為200** 的結果 :
+    ```js
+    res.status(200).send({
+        status: '0',
+        msg: 'POST 請求成功!',
+        data: body
+    })
+    ```
+---
+```js
+const express = require('express')
+
+const router = express.Router()
+
+router.get('/get', (req, res) => {
+    const query = req.query
+
+    res.send({
+        status: '0',
+        msg: "GET 請求成功",
+        data: query
+    })
+    // console.log(query)
+})
+
+router.post('/post', (req, res) => {
+    const body = req.body
+    res.status(200).send({
+        status: '0',
+        msg: 'POST 請求成功!',
+        data: body
+    })
+    // console.log(body)
+})
+
+module.exports = router
+```
+* 更多HTTP狀態碼，可以看[維基百科詳列的資訊](https://zh.wikipedia.org/zh-tw/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)。
