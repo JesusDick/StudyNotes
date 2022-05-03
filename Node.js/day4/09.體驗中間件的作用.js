@@ -4,7 +4,6 @@ const app = express()
 app.use((req, res, next) => {
 
     const time = Date.now()
-
     req.startTime = time
 
     next()

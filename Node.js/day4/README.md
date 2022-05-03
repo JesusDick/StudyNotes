@@ -319,3 +319,225 @@ app.listen(80, () => {
     console.log('server running http://127.0.0.1')
 })
 ```
+
+## [10.定義多個全局中間件.js](./10.定義多個全局中間件.js)
+若想每次都對 `req` 或 `res` 做不一樣的預處理，只要重複調用 `app.use((req,res,next) => {/*處理函數*/ next()})` 就行了。
+* ### 以下代碼執行過程 :
+    當我訪問路由時(`http://127.0.0.1/user`)，會先通過第一個全局中間件，該中間件會在終端介面打印(`'調用了第一個全局中間件'`)，在通過第二個中間件，該中間件也會再終端介面打印(`'調用了第二個全局中間件'`)，然後才響應客戶端字符串(`'User page.'`)
+---
+1. 定義第一個全局中間件 :
+```js
+app.use((req, res, next) => {
+    console.log('調用了第一個全局中間件')
+    next()
+})
+```
+2. 定義第二個全局中間件 :
+```js
+app.use((req, res, next) => {
+    console.log('調用了第二個全局中間件')
+    next()
+})
+```
+---
+```js
+const express = require('express')
+const app = express()
+
+app.use((req, res, next) => {
+    console.log('調用了第一個全局中間件')
+    next()
+})
+
+app.use((req, res, next) => {
+    console.log('調用了第二個全局中間件')
+    next()
+})
+
+app.get('/user', (req, res) => {
+    res.send('User page.')
+})
+
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [11.局部生效的中間件.js](./11.局部生效的中間件.js)
+
+* 注意 : `mw1` 並不會影響 `app.use('/user', (req,res) => {})` 這個路由，因為 `mw1` 沒有被該路由調用，所以訪問該路由時(`http://127.0.0.1/user`)，並不會在終端介面打印字符串(`'調用局部生效的中間件'`)。
+
+局部中間件，顧名思義只發生在局部代碼才生效，`mw1` 這個中間件，只在訪問 **當前的路由(`http://127.0.0.1/`)** 中才生效，這種用法屬於 **局部生效中間件**。
+
+1. 定義局部生效中間件 :
+```js
+const mw1 = (req, res, next) => {
+    console.log('調用局部生效的中間件')
+    next()
+}
+```
+2. 創建路由，並通過局部生效中間件處理該路由函數 :
+```js
+app.get('/', mw1, (req, res) => {
+    res.send('Home Page')
+    
+})
+```
+---
+```js
+const express = require('express')
+const app = express()
+
+const mw1 = (req, res, next) => {
+    console.log('調用局部生效的中間件')
+    next()
+}
+
+app.get('/', mw1, (req, res) => {
+    res.send('Home Page')
+    
+})
+
+// mw1 這個中間件不會影響下面這個路由
+app.get('/user', (req, res) => {
+    res.send('user Page')
+})
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [12.同時使用多個局部中間件.js](./12.同時使用多個局部中間件.js)
+
+有時候我們想對個別的路由，處理不同的預處理，這時我們可以調用多個局部中間件，並對不同的路由做不同的處理。
+
+若多個中間件只處理單一的路由可以使用逗號(`,`)隔開，繼續填充局部中間件名。
+
+1. 多個局部中間件處理單一路由 :
+```js
+app.get('/', mw1, mw2, (req, res) => {
+    res.send('Home Page')
+    
+})
+```
+2. 針對不同路由，使用不同局部中間件 :
+```js
+app.get('/user',mw2, (req, res) => {
+    res.send('user Page')
+})
+
+```
+---
+```js
+const express = require('express')
+const app = express()
+
+const mw1 = (req, res, next) => {
+    console.log('調用了第一個局部生效的中間件')
+    next()
+}
+
+const mw2 = (req, res, next) => {
+    console.log('調用了第二個局部生效的中間件')
+    next()
+}
+
+app.get('/', mw1, mw2, (req, res) => {
+    res.send('Home Page')
+    
+})
+
+app.get('/user',mw2, (req, res) => {
+    res.send('user Page')
+})
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [13.演示錯誤級別中間件.js](./13.演示錯誤級別中間件.js)
+* ### 注意 : 時刻謹記，錯誤級別中間件一定寫在所有路由之後。
+
+1. `throw new Error('服務器內部發生了錯誤')` : 人為的制造錯誤。
+> `new Error()` 構造如下 :
+>> new Error([message[, fileName[, lineNumber]]])
+2. 定義錯誤級別中間件，捕獲整個項目的異常錯誤，從而防止程序的崩潰 :
+```js
+app.use((err, req, res, next) => {
+    console.log('發生了錯誤\n' + err.message)
+    res.send('Error : ' + err.message)
+})
+```
+> `err.message` :
+>> 捕獲從 `throw new Error()` 產生的 `message`(錯誤訊息)。
+---
+
+```js
+const express = require('express')
+const app = express()
+
+app.get('/', (req,res) => {
+    throw new Error('服務器內部發生了錯誤')
+
+    res.send('Home page')
+})
+
+
+app.use((err, req, res, next) => {
+    console.log('發生了錯誤\n' + err.message)
+    res.send('Error : ' + err.message)
+})
+
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+## [14.演示內置中間件的使用.js](./14.演示內置中間件的使用.js)
+* ### 注意 : 除了錯誤級別中間件，其他中間件，必須在路由之前進行配置。
+
+1. `app.use(express.json())` : 通過 `express.json` 這個中間件，解析表單中的 **JSON格式** 的數據。
+2. `app.use(express.urlencoded({extended: false}))` : 通過 `express.urlencoded()` 這個中間件，來解析表單中的 **url-encoded格式** 的數據。
+3. 使用 `req.body`，來獲取 **JSON格式** 的表單數據和 **url-encoded格式** 的數據 :
+    ```js
+    app.post('/user', (req, res) => {
+
+        console.log(req.body)
+        res.send('OK')
+    })
+    ```
+* 注意 : 默認情況下，如果不配置解析表單數據的中間件，則 `req.body` 默認等於 `undefined`。
+---
+
+```js
+const express = require('express')
+
+const app = express()
+
+app.use(express.json())
+
+app.use(express.urlencoded({extended: false}))
+
+app.post('/user', (req, res) => {
+
+    console.log(req.body)
+    res.send('OK')
+})
+
+app.post('/book', (req, res) => {
+    // 在服務器端，可以通過 req.body 來獲取 JSON 格式的表單數據和 url-encoded 格式的數據
+    console.log(req.body)
+    res.send('OK')
+})
+
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+* 以上效果可以在 **Postman** ，使用下圖的方式呈現 :
+<img src="./pict/expressJSON.png" width="60%">

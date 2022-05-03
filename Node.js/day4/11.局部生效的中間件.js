@@ -17,7 +17,7 @@ app.get('/', mw1, (req, res) => {
     
 })
 
-// mw1 這個中間件部會影響下面這個路由
+// mw1 這個中間件不會影響下面這個路由
 app.get('/user', (req, res) => {
     res.send('user Page')
 })
