@@ -3,7 +3,7 @@
 // 1. 導入 Express
 const express = require('express')
 
-// 2. 創建路ㄧ創建路由對象
+// 2. 創建路由對象
 const router = express.Router()
 
 
@@ -16,5 +16,5 @@ router.post('/user/add', (req, res) => {
     res.send('Add New User!')
 })
 
-// 4. 向外倒出路由對象
+// 4. 向外導出路由對象
 module.exports = router
