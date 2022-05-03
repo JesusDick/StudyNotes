@@ -17,7 +17,7 @@
 5. `app.post('/user', (req,res) => {}` : 跟上面的 `app.get()` 同原理，只不過這裡監聽的是 **POST** 方法。
 6. `res.send('請求成功')` : 調用 **express** 提供的 `res.send()` 方法，向客戶端響應一個 **文本字符串**。
 7. `console.log(req.query)` : 在終端介面打印出，通過 `req.query()` 獲取到客戶端發送過來的查詢字符串(`?`)之後的參數。
-    * 注意 : 默認情況下，`req.query()` 是一個空對象
+    * 注意 : 默認情況下，`req.query()` 是一個空對象。
 
 8. `res.send(req.query)` : 將查詢字符串(`?`)之後的參數，響應回給客戶端。
 9. `app.get('/user/:ids/:name', (req,res) => {}` : 可以通過下面的 `req.params()`，獲取到冒號(`:`)之後的[動態參數](../Express基礎.md#4-獲取url中的動態參數day401使用express創建最基本的服務器js)。
