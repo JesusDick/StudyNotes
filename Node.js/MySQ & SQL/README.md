@@ -48,5 +48,5 @@
 ## [基本MySQL](./基本MySQL.md)
 一些基本的MySQL Workbench的基本操作
 
-## [SQL基本語法](./)
+## [SQL基本語法](./SQL基本語法.md)
 在 MySQL Workbench，用一些簡單的語法，對資料表進行操作。
