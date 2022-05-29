@@ -572,26 +572,34 @@ app.listen(80, () => {
 ```
 
 ## [16.自訂義解析表單數據的中間件.js](./16.自訂義解析表單數據的中間件.js)
-1. `const qs = require('querystring')` : 導入 Node.js 內置的 querystring 模塊。
-2. `let str = ''` : 定義一個 `str` 字符串，專門用來儲存客戶端發送過來的請求體數據。
-3. 監聽 req 的 data 事件 :
-   ```js
-    req.on('data', (chunck) => {
-        str += chunck
-    })
-   ```
-   > 我們的資料在傳輸時，不一定是整段傳輸，有可能會將資料分割成片段，這時我們需要重新串接起這些資料。
+#### 1. `const qs = require('querystring')` : 導入 Node.js 內置的 querystring 模塊。
+#### 2. `let str = ''` : 定義一個 `str` 字符串，專門用來儲存客戶端發送過來的請求體數據。
+#### 3. 監聽 req 的 data 事件 :
+* 在中間件中，需要監聽 req 對象的 data 事件，來獲取客戶端發送到服務器的數據。
+
+```js
+req.on('data', (chunck) => {
+    str += chunck
+})
+```
+   > 我們的資料在傳輸時，不一定是整段傳輸，如果數據量較大，無法一次發送完畢，則客戶端會把數據切割後，分批發送到服務器，所以 **data事件** 可能會觸發多次，每次觸發 **data事件**，獲取到的數據只是完整數據的一小部分，這時我們需要重新串接起這些資料。
    
-4. 監聽 req 的 end 事件 :
-    ```js
-    req.on('end', () => {
-        const body = qs.parse(str)
-        req.body = body
-        next()
-    }) 
-    ```
-    > `const body = qs.parse(str)`
-    >> 把字符串格式的請求體數據，解析成對象格式。
+#### 4. 監聽 req 的 end 事件 :
+* 當請求體數據　**接收完畢後**，會 **自動觸發 req 的 end 事件**，因此我們可以 **在 req 的 end 事件中，拿到完整並處理的請求體數據**。
+
+```js
+req.on('end', () => {
+    const body = qs.parse(str)
+    req.body = body
+    next()
+}) 
+```
+> `const body = qs.parse(str)` : 把字符串格式的請求體數據，解析成對象格式。
+>> Node.js 內置一個 **querystring模塊**，專門用來處理查詢字符串，通過這個模塊提供的 `parser`
+可以輕鬆把查詢字符串，解析成對象的格式。
+>
+> `req.body = body` : 將解析出來的數據對象掛載為 `req.body`。
+>> 上游的中間件 和 下游的中間件 及 路由之間，共享同一份 `req` 和 `res`，因此我們可以將解析出來的數據，掛載為 `req` 的自訂義屬性，命名為 `req.body`，供下游使用。
 ---
 ```js
 const express = require('express')
