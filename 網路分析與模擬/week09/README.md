@@ -337,4 +337,125 @@ gnuplot gnuplot.plt
 
 * 附註 : 以上圖片會有往上衝的線條，並不是它的 **Mbps** 暴增，而是我在傳送時，有時會有 **Kbps** 的流量，所以那 **暴衝的數值單位是 Kbps**。
 
-## 題4. 我目前還沒做
+## 題4. h1可用ssh連到d2，且可用curl到d1抓網頁
+* 拓樸圖如下。
+
+![拓樸圖](./pict/midTest04.png)
+
+### 環境代碼
+```
+#!/usr/bin/python
+from mininet.net import Mininet
+from mininet.link import Link, TCLink
+from mininet.cli import CLI
+from mininet.log import setLogLevel, info
+from mininet.net import Containernet
+from mininet.node import Controller, Docker, OVSSwitch
+
+ 
+def topology():
+    "Create a network."
+    net = Containernet()
+    h1 = net.addHost('h1', ip='192.168.1.1/24')
+    r1 = net.addHost('r1')
+
+    info('*** Adding docker containers\n')
+    d1 = net.addDocker('d1', ip='192.168.2.1', dimage="ubuntu:1.0")
+    d2 = net.addDocker('d2', ip='192.168.3.1', dimage="ubuntu:1.0")
+
+    net.addLink(h1, r1)
+    net.addLink(r1, d1)
+    net.addLink(r1, d2)
+    net.start()
+ 
+    r1.cmd("echo 1 > /proc/sys/net/ipv4/ip_forward")
+    r1.cmd("ifconfig r1-eth0 0")
+    r1.cmd("ifconfig r1-eth1 0")
+    r1.cmd("ifconfig r1-eth2 0")
+    r1.cmd("ip addr add 192.168.1.254/24 brd + dev r1-eth0")
+    r1.cmd("ip addr add 192.168.2.254/24 brd + dev r1-eth1")
+    r1.cmd("ip addr add 192.168.3.254/24 brd + dev r1-eth2")
+
+    h1.cmd("ip route add default via 192.168.1.254")
+    d1.cmd("ip route add default via 192.168.2.254")
+    d2.cmd("ip route add default via 192.168.3.254")
+
+    r1.cmd("iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o r1-eth1 -j MASQUERADE")
+    r1.cmd("iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o r1-eth2 -j MASQUERADE")
+
+    d1.cmd("/etc/init.d/apache2 start")
+
+    d2.cmd("/etc/init.d/ssh start")
+ 
+    CLI(net)
+    net.stop()
+ 
+if __name__ == '__main__':
+    setLogLevel( 'info' )
+    topology()
+```
+
+### 步驟1. 執行環境代碼
+```
+python midtest04.py
+```
+![測試](./pict/midTest04-1.png)
+
+### 步驟2. 在 d1 容器內創建網頁
+#### 2-1 新增本地終端
+![測試](./pict/NewTerminal.png)
+#### 2-2 查詢容器ID
+```
+docker ps
+```
+![測試](./pict/midTest04-2.png)
+#### 2-3 進入 d1 容器
+```
+docker exec -it 54c bash
+```
+
+#### 2-4 查詢 d1 IP
+```
+ifconfig
+```
+![測試](./pict/midTest04-4.png)
+
+
+#### 2-5. 在 d1容器 內創建網頁
+```
+echo hi > hi.htm
+```
+![測試](./pict/midTest04-3.png)
+
+### 步驟3. h1 訪問 d1 網頁
+#### 3-1 開啟 h1 節點終端
+```
+xterm h1
+```
+#### 3-2 訪問 d1 網頁
+```
+curl 192.168.2.1/hi.htm
+```
+![測試](./pict/midTest04-5.png)
+
+### 步驟4. 與 d2 建立反向連接
+#### 4-1 再新增一個本地終端
+![測試](./pict/NewTerminal.png)
+#### 4-2 進到 d2 容器內
+```
+docker exec -it f20 bash
+```
+#### 4-3 查詢 d2 IP
+```
+ifconfig
+```
+![測試](./pict/midTest04-6.png)
+#### 4-4 回到 h1 終端介面，輸入 ssh 反向連接指令
+```
+ssh -Nf -L 192.168.1.1:5555:192.168.3.1:80 root@192.168.3.1
+```
+#### 4-5 查詢連線是否建立成功
+```
+netstat -tunple | grep 5555
+```
+![測試](./pict/midTest04-7.png)
