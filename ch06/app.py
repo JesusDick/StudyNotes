@@ -27,6 +27,15 @@ class Movie(db.Model):  # 表名将会是 movie
     title = db.Column(db.String(60))  # 电影标题
     year = db.Column(db.String(4))  # 电影年份
 
+@app.cli.command()  # 註冊為命令
+@click.option('--drop', is_flag=True, help='Create after drop.')  # 設置選項
+def initdb(drop):
+    """Initialize the database."""
+    if drop:  # 判斷是否輸入選項
+        db.drop_all()
+    db.create_all()
+    click.echo('Initialized database.')  # 輸出提示訊息
+
 @app.cli.command()
 def forge():
     """Generate fake data."""
