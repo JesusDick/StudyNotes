@@ -29,7 +29,6 @@ app.use(cors())
 
 // 導入路由模塊
 const router = require('./02.apiRouter')
-const res = require('express/lib/response')
 
 // 先前說過 `app.use()` 就是註冊全局中間件，所以在這邊可以認為 router 就是一個中間件
 app.use('/api', router)
