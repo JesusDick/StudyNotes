@@ -1,6 +1,153 @@
 # [使用 CORS 達到跨域共享資源](../CORS.md)
 ## [01.使用express寫接口.js](./01.使用express寫接口.js)
+* 附註 : 該主題會搭配 [**02.apiRouter.js**](./02.apiRouter.js) 這個 **路由模塊**，來取得 [**03.測試接口跨域問題.html**](./03.測試接口跨域問題.html) 這個網頁中 的 **請求的方法和路由**，再寄送對應內容回 [**03.測試接口跨域問題.html**](./03.測試接口跨域問題.html)。
+```js
+const express = require('express')
+const app = express()
 
+app.use(express.urlencoded({extended: false}))
+
+app.get('/api/jsonp', (req, res) => {
+    const funcName = req.query.callback
+    const data = {name:'jerry', age: 20}
+    const scriptStr = `${funcName}(${JSON.stringify(data)})`
+    res.send(scriptStr)
+})
+
+const cors = require('cors')
+app.use(cors())
+
+const router = require('./02.apiRouter')
+app.use('/api', router)
+
+app.listen(80, () => {
+    console.log('server running http://127.0.0.1')
+})
+```
+
+* ### 說明
+    #### 1. 使用 JSONP 接口
+    * 注意 : 必須在配置 **cors** 中間件之前，配置 **JSONP** 的接口，否則會視為 **cors** 接口。
+    ```js
+    app.get('/api/jsonp', (req, res) => {
+    const funcName = req.query.callback
+    const data = {name:'jerry', age: 20}
+    const scriptStr = `${funcName}(${JSON.stringify(data)})`
+    res.send(scriptStr)
+    })
+    ```
+    > `const funcName = req.query.callback` : 獲取客戶端發送過來的回調函數的名字。
+    >
+    > `const data = {name:'jerry', age: 20}` : 定義要發送到客戶端的數據對象。
+    > 
+    > `const scriptStr =${funcName}(${JSON.stringify(data)})` : 拼接出一個函數調用的字符串。
+    #### 2. 將 cors 註冊為全局中間件
+    * 注意 : 一定要在路由之前，配置 cors 這個中間件，從而解決接口跨域的問題
+    ```js
+    const cors = require('cors')    //導入 CORS模塊
+    app.use(cors())
+    ```
+    #### 3. 註冊路由模塊，且統一路由前綴名為 `api`
+    * 附註 : 先前說過 `app.use()` 就是註冊全局中間件，所以在這邊可以認為 `router` 就是一個中間件
+    ```js
+    const router = require('./02.apiRouter') //導入自訂義的路由模塊
+    app.use('/api', router)
+    ```
+
+## [02.apiRouter.js](./02.apiRouter.js)
+```js
+const express = require('express')
+const router = express.Router()
+
+router.get('/get', (req, res) => 
+    const query = req.query
+    res.send({
+        status: '0',
+        msg: "GET 請求成功",
+        data: query
+    })
+    // console.log(query)
+})
+
+router.post('/post', (req, res) => {
+    const body = req.body
+    res.status(200).send({
+        status: '0',
+        msg: 'POST 請求成功!',
+        data: body
+    })
+    // console.log(body)
+})
+
+router.delete('/delete', (req, res) => {
+    res.send({
+        status: '0',
+        msg: 'DELETE 請求成功!',
+    })
+})
+
+module.exports = router
+```
+
+* ### 說明
+    #### 1. 定義 GET 接口
+    * 注意 : 只當 **請求的路由** 為 `http://127.0.0.1/api/get` 時，才會觸發該接口。
+    ```js
+    router.get('/get', (req, res) => 
+        const query = req.query
+        res.send({
+            status: '0',
+            msg: "GET 請求成功",
+            data: query
+        })
+        // console.log(query)
+    })
+    ```
+    > `const query = req.query` : 通過 req.query 獲取客戶端通過查詢字符串，發送到服務器的數據。
+    > 
+    > `res.send({})` : 調用 `res.send()` 方法，向客戶端**響應處理的結果**。
+    >> `status: '0'` : 0 表示處理成功，1 表示處理失敗。
+    >> 
+    >> `msg: "GET 請求成功"` : 狀態的描述。
+    >> 
+    >> `data: query` : 需要響應給客戶端的數據。
+
+    #### 2. 定義 POST 接口
+    * 注意 : 只當 **請求的路由** 為 `http://127.0.0.1/api/post` 時，才會觸發該接口。
+    ```js
+    router.post('/post', (req, res) => {
+        const body = req.body
+        res.status(200).send({
+            status: '0',
+            msg: 'POST 請求成功!',
+            data: body
+        })
+        // console.log(body)
+    })
+    ```
+    > `const body = req.body` : 通過 req.body 獲取請求體中包含的 url-encoded 格式的數據。
+    >
+    > `res.status(200).send({})` : 當請求的狀態為 **200** 時，才向向客戶端響應結果。
+    >> `status: '0'` : 0 表示處理成功，1 表示處理失敗。
+    >> 
+    >> `msg: "GET 請求成功"` : 狀態的描述。
+    >> 
+    >> `data: body` : 需要響應給客戶端的數據。
+    
+    #### 3. 定義 DELETE 接口
+    * 注意 : 只當 **請求的路由** 為 `http://127.0.0.1/api/delete` 時，才會觸發該接口。
+    ```js
+    router.delete('/delete', (req, res) => {
+        res.send({
+            status: '0',
+            msg: 'DELETE 請求成功!',
+        })
+    })
+    ```
+    #### 4. 對外公開 router，好讓 [01.使用express寫接口.js](./01.使用express寫接口.js) 可以存取 router 下的所有接口
+    ```js
+    module.exports = router
+    ```
 
 # 項目中操作MySQL
 ## 項目中操作資料庫的概略步驟

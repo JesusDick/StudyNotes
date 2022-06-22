@@ -1,6 +1,3 @@
-// 寫入README.md : 若想查看結果可以使用 ![Postman](Postman網址)，需要註冊和下載桌面代理。
-// 並將網址輸入到圖片的欄位內，欄位左邊的下拉選單可以選擇使用的方法
-
 // 1. 導入 express
 const express = require('express')
 
@@ -18,8 +15,7 @@ app.post('/user', (req,res) => {
     res.send('請求成功')
 })
 
-// 寫入README.md : 一樣對 Postman 欄位寫入 `http:/127.0.0.1/?name=jerry&age=20`，
-// 就可以看到`req.query`的效果，如下圖
+
 app.get('/', (req,res) => {
     // 通過 req.query 可以獲取到客戶端發送過來的查詢參數
     // 注意: 默認情況下，req.query() 是一個空對象

@@ -9,13 +9,13 @@ app.use(express.urlencoded({extended: false}))
 // 必須在配置 cors 中間件之前，配置 JSONP 的接口
 app.get('/api/jsonp', (req, res) => {
     // TODO : 定義 JSONP 接口的具體過程
-    // 1. 得到函數名稱
+    // 1. 獲取客戶端發送過來的回調函數的名字
     const funcName = req.query.callback
 
     // 2. 定義要發送到客戶端的數據對象
     const data = {name:'jerry', age: 20}
 
-    // 3. 拼接出一個函數的調用
+    // 3. 拼接出一個函數調用的字符串
     const scriptStr = `${funcName}(${JSON.stringify(data)})`
 
     // 4. 把拼接的字符串，響應給客戶端
@@ -30,7 +30,7 @@ app.use(cors())
 // 導入路由模塊
 const router = require('./02.apiRouter')
 
-// 先前說過 `app.use()` 就是註冊全局中間件，所以在這邊可以認為 router 就是一個中間件
+// 把路由模塊，註冊到 app 上
 app.use('/api', router)
 
 // 啟動服務器
