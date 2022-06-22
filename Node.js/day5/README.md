@@ -148,6 +148,8 @@ module.exports = router
     ```js
     module.exports = router
     ```
+## [03.測試接口跨域問題.html](./03.測試接口跨域問題.html)
+* ### 附註 : 該 html網頁 主要用於展示各個接口中跨域請求的效果，所以不會加以說明 html 中的各個使用方法和用意。
 
 # 項目中操作MySQL
 ## 項目中操作資料庫的概略步驟
