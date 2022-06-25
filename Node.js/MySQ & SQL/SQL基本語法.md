@@ -31,6 +31,8 @@ INSERT INTO 資料表(欄位1, 欄位2 .....) VALUES (值1, 值2 .....)
 ![insertinto語句](./pict/insert_into01.png)
 
 ## UPDATE語句
+* 注意 : 如果不加 `WHERE` 條件的話，會將整張表更新
+
 Update語句用於修改表中的數據，語法格式如下。
 ### 1. 使用特定條件(`WHERE`)，更新表內的某一數據
 ```
