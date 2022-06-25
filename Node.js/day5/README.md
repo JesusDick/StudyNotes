@@ -300,7 +300,7 @@ db.query(updateStr, [updateOBJ.username, updateOBJ.password, updateOBJ.id], (err
 ```
 ### [更新數據的便捷方式](./09.便捷更新數據-使用mysql.js)
 #### 2. 更新 id=9 的數據，其中 username = Ashy，password = shiny :
-原理如同上個主題的 ***[插入數據的便捷方式](#2-插入數據的便捷方式)***，更新資料表的數據時，如果 **數據對象的每個屬性 和 資料表的欄位** 一一對應的話，則可以通過如下的方式快速更新資料表的數據。
+原理如同上個主題的 ***[插入數據的便捷方式](#插入數據的便捷方式)***，更新資料表的數據時，如果 **數據對象的每個屬性 和 資料表的欄位** 一一對應的話，則可以通過如下的方式快速更新資料表的數據。
 ```js
 const updateOBJ = {username: 'Ashy', password: 'shiny', id: 9}
 const updateStr = 'update users set ? where id=?'
