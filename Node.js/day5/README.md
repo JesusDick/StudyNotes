@@ -177,7 +177,7 @@ const db = mysql.createPool({
 ```
 1. `const mysql = require('mysql')` : 導入 mysql模塊。
 2. 通過 mysql 模塊連接到 MySQL 資料庫 :
-    ```
+    ```js
     const db = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
@@ -281,14 +281,14 @@ db.query(sqlStr, user, (err, results) => {
 ```
 ![插入語句](./pict/insert_into02.png)
 
-## [更新數據 - 使用 mysql 模塊](./08.更新數據-使用mysql.js)
+## [07. 更新數據 - 使用 mysql 模塊](./08.更新數據-使用mysql.js)
 ### 更新數據
 * 注意 : 執行了 update 語句之後，執行的結果，也是一個對象，可以通過 `affectedRows` 判斷是否更新成功。
 可以通過以下的方式，更新表中的數據。
 * 注意 : 如果不加 `WHERE` 條件的話，會將整張表更新。
-#### 1. 更新 id=9 的數據，其中 username = Allison，password = summer :
+#### 1. 更新 id=9 的數據，其中 username = Ashy，password = shiny :
 ```js
-const updateOBJ = {username: 'Allison', password: 'summer', id: 9}
+const updateOBJ = {username: 'Ashy', password: 'shiny', id: 9}
 const updateStr = 'update users set username=?, password=? where id=?'
 
 db.query(updateStr, [updateOBJ.username, updateOBJ.password, updateOBJ.id], (err, results) => {
@@ -299,10 +299,10 @@ db.query(updateStr, [updateOBJ.username, updateOBJ.password, updateOBJ.id], (err
 })
 ```
 ### [更新數據的便捷方式](./09.便捷更新數據-使用mysql.js)
-#### 2. 更新 id=9 的數據，其中 username = Ashy，password = shiny :
+#### 2. 更新 id=9 的數據，其中 username = Allison，password = summer :
 原理如同上個主題的 ***[插入數據的便捷方式](#插入數據的便捷方式)***，更新資料表的數據時，如果 **數據對象的每個屬性 和 資料表的欄位** 一一對應的話，則可以通過如下的方式快速更新資料表的數據。
 ```js
-const updateOBJ = {username: 'Ashy', password: 'shiny', id: 9}
+const updateOBJ = {username: 'Allison', password: 'summer', id: 9}
 const updateStr = 'update users set ? where id=?'
 
 db.query(updateStr, [updateOBJ, updateOBJ.id], (err, results) => {
@@ -312,3 +312,50 @@ db.query(updateStr, [updateOBJ, updateOBJ.id], (err, results) => {
     }
 })
 ```
+
+## [08. 刪除數據-使用 mysql 模塊](./10.刪除數據-使用mysql.js)
+
+### 刪除數據
+* 如果 SQL 語句中有 **多個佔位符**，則 **必須使用數組** 為每個佔位符指定具體的值。
+* 如果 SQL 語句 **只有一個佔位符**，則 **可以省略數組**，也就是中括號(`[]`)。
+
+![刪除](./pict/delete01.png)
+
+#### 1. 刪除 id = 8 的用戶 :
+在刪除數據時，推薦根據 `id` 這樣的唯一標識，來刪除對應數據。
+```js
+const delStr = 'delete from users where id=? '
+db.query(delStr, 8, (err, results) => {
+    if(err) return console.log(err.message)
+    if(results.affectedRows === 1){
+        console.log("刪除數據成功!~")
+    }
+})
+```
+![刪除](./pict/delete02.png)
+
+### [標記刪除](./11.標記刪除-使用mysql.js)
+1. 使用 **DELETE語句**，會把真正的數據從資料表中刪除掉，為了保險起見，**推薦使用標記刪除的形式**，來 **模擬刪除的動作**。
+2. 所謂的 **標記刪除**，就是在表中設置類似於 `status` 這樣的 **狀態欄位**，來標記當前這條數據是否被刪除。
+3. 當用戶執行了刪除的動作時，我們並沒有執行 **DELETE語句** 把數據刪除掉，而是執行了 **UPDATE語句**，將這條數據對應的 `status` 欄位標記為刪除即可。
+
+> 使用標記刪除的好處 :
+> > 倘若用戶不小心刪掉了自己的帳號，而按下刪除按鈕的當下觸發的是 **DELETE語句**，那數據就真的消失了，用戶若想找回帳號是找不回來的，
+但若是配置像有 `status` 這樣的 **狀態欄位**，當用戶不小心刪掉了自己的帳號，則是觸發 **UPDATE語句**，讓帳戶可能是隱藏等等的效果，
+當用戶想要找回時，則再次觸發 **UPDATE語句**，將帳戶顯現。
+
+#### 2. 將 id = 9 的用戶標記刪除 :
+```js
+const markDelStr = 'update users set status=? where id=?'
+db.query(markDelStr, [1, 9], (err, results) => {
+    if(err) return console.log(err.message)
+    if(results.affectedRows === 1){
+        console.log("標記刪除成功!~")
+        db.query(selectStr, (err, results) => {
+            if(err) return console.log(err.message)
+            console.log(results, '\n標記刪除成功!~')
+        })
+    }
+})
+```
+![標記刪除](./pict/delete03.png)

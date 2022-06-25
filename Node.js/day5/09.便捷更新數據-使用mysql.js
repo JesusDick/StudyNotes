@@ -11,18 +11,18 @@ const db = mysql.createPool({
 const selectStr = 'select * from users'
 
 // 預更新的數據
-const updateOBJ = {username: 'Ashy', password: 'shiny', id: 9}
+const updateOBJ = {username: 'Allison', password: 'summer', id: 9}
 // 定義更新語句
 const updateStr = 'update users set ? where id=?'
 // 執行 SQL 語句
-// db.query(updateStr, [updateOBJ, updateOBJ.id], (err, results) => {
-//     if(err) return console.log(err.message)
-//     if(results.affectedRows === 1){
-//         console.log('更新數據成功!~')
-//     }
-// })
-
-db.query(selectStr, (err, results) => {
+db.query(updateStr, [updateOBJ, updateOBJ.id], (err, results) => {
     if(err) return console.log(err.message)
-    console.log(results)
+    if(results.affectedRows === 1){
+        console.log('更新數據成功!~')
+    }
 })
+
+// db.query(selectStr, (err, results) => {
+//     if(err) return console.log(err.message)
+//     console.log(results)
+// })
