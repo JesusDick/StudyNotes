@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./jquery.js"></script>
+</head>
+
+<body>
+  <!-- 登錄表單 -->
+  <form id="form1">
+    <div>帳號：<input type="text" name="username" /></div>
+    <div>密碼：<input type="password" name="password" /></div>
+    <button>登錄</button>
+  </form>
+
+  <script>
+    $(function () {
+      // 監聽表單的提交事件
+      $('#form1').on('submit', function (e) {
+        // 阻止默認提交行為
+        e.preventDefault()
+        // 發起 POST 登錄請求
+        $.post('/api/login', $(this).serialize(), function (res) {
+          // status 為 0 表示登錄成功；否則表示登錄失敗！
+          if (res.status == 0) {
+            location.href = './index.html'
+          } else {
+            alert('登錄失敗！')
+          }
+        })
+      })
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./jquery.js"></script>
+</head>
+
+<body>
+  <h1>首頁</h1>
+
+  <button id="btnLogout">退出登錄</button>
+
+  <script>
+    $(function () {
+
+      // 頁面加載完成後，自動發起請求，獲取用戶姓名
+      $.get('/api/username', function (res) {
+        // status 為 0 表示獲取用戶名稱成功；否則表示獲取用戶名稱失敗！
+        if (res.status != 0) {
+          alert('您尚未登錄，請登錄後再執行此操作！')
+          location.href = './login.html'
+        } else {
+          alert('歡迎您：' + res.username)
+        }
+      })
+
+      // 點擊按鈕退出登錄
+      $('#btnLogout').on('click', function () {
+        // 發起 POST 請求，退出登錄
+        $.post('/api/logout', function (res) {
+          if (res.status == 0) {
+            // 如果 status 為 0，則表示退出成功，重新跳轉到登錄頁面
+            location.href = './login.html'
+          }
+        })
+      })
+    })
+  </script>
+</body>
+
+</html>
